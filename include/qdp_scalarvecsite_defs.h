@@ -146,18 +146,26 @@ typedef OLattice< PSpinMatrix< PColorMatrix< RComplex< ILattice<REAL,INNER_LEN> 
 typedef OLattice< PSpinMatrix< PColorMatrix< RComplex< ILattice<REAL,INNER_LEN> >, 2>, Ns> > LatticePropagator2;
 typedef OLattice< PSpinMatrix< PColorMatrix< RComplex< ILattice<REAL,INNER_LEN> >, 1>, Ns> > LatticePropagator1;
 
+typedef OLattice< PScalar< PColorMatrix< RComplex< ILattice<REAL,INNER_LEN> >, 8> > > LatticeColorMatrix8;
+typedef OLattice< PScalar< PColorMatrix< RComplex< ILattice<REAL,INNER_LEN> >, 6> > > LatticeColorMatrix6;
 typedef OLattice< PScalar< PColorMatrix< RComplex< ILattice<REAL,INNER_LEN> >, 3> > > LatticeColorMatrix3;
 typedef OLattice< PScalar< PColorMatrix< RComplex< ILattice<REAL,INNER_LEN> >, 2> > > LatticeColorMatrix2;
 typedef OLattice< PScalar< PColorMatrix< RComplex< ILattice<REAL,INNER_LEN> >, 1> > > LatticeColorMatrix1;
 
+typedef OLattice< PScalar< PColorVector< RComplex< ILattice<REAL,INNER_LEN> >, 8> > > LatticeColorVector8;
+typedef OLattice< PScalar< PColorVector< RComplex< ILattice<REAL,INNER_LEN> >, 6> > > LatticeColorVector6;
 typedef OLattice< PScalar< PColorVector< RComplex< ILattice<REAL,INNER_LEN> >, 3> > > LatticeColorVector3;
 typedef OLattice< PScalar< PColorVector< RComplex< ILattice<REAL,INNER_LEN> >, 2> > > LatticeColorVector2;
 typedef OLattice< PScalar< PColorVector< RComplex< ILattice<REAL,INNER_LEN> >, 1> > > LatticeColorVector1;
 
+typedef OScalar< PScalar< PColorMatrix< RComplex< IScalar<REAL> >, 8> > > ColorMatrix8;
+typedef OScalar< PScalar< PColorMatrix< RComplex< IScalar<REAL> >, 6> > > ColorMatrix6;
 typedef OScalar< PScalar< PColorMatrix< RComplex< IScalar<REAL> >, 3> > > ColorMatrix3;
 typedef OScalar< PScalar< PColorMatrix< RComplex< IScalar<REAL> >, 2> > > ColorMatrix2;
 typedef OScalar< PScalar< PColorMatrix< RComplex< IScalar<REAL> >, 1> > > ColorMatrix1;
 
+typedef OScalar< PScalar< PColorVector< RComplex< IScalar<REAL> >, 8> > > ColorVector8;
+typedef OScalar< PScalar< PColorVector< RComplex< IScalar<REAL> >, 6> > > ColorVector6;
 typedef OScalar< PScalar< PColorVector< RComplex< IScalar<REAL> >, 3> > > ColorVector3;
 typedef OScalar< PScalar< PColorVector< RComplex< IScalar<REAL> >, 2> > > ColorVector2;
 typedef OScalar< PScalar< PColorVector< RComplex< IScalar<REAL> >, 1> > > ColorVector1;
@@ -207,11 +215,15 @@ typedef OLattice< PSpinMatrix< PScalar< RComplex< ILattice<REAL32,INNER_LEN> > >
 typedef OLattice< PSpinVector< PScalar< RComplex< ILattice<REAL32,INNER_LEN> > >, Ns> > LatticeSpinVectorF;
 
 typedef OLattice< PScalar< PColorMatrix< RComplex< ILattice<REAL32,INNER_LEN> >, Nc> > > LatticeColorMatrixF;
+typedef OLattice< PScalar< PColorMatrix< RComplex< ILattice<REAL32,INNER_LEN> >, 8> > > LatticeColorMatrixF8;
+typedef OLattice< PScalar< PColorMatrix< RComplex< ILattice<REAL32,INNER_LEN> >, 6> > > LatticeColorMatrixF6;
 typedef OLattice< PScalar< PColorMatrix< RComplex< ILattice<REAL32,INNER_LEN> >, 3> > > LatticeColorMatrixF3;
 typedef OLattice< PScalar< PColorMatrix< RComplex< ILattice<REAL32,INNER_LEN> >, 2> > > LatticeColorMatrixF2;
 typedef OLattice< PScalar< PColorMatrix< RComplex< ILattice<REAL32,INNER_LEN> >, 1> > > LatticeColorMatrixF1;
 
 typedef OLattice< PScalar< PColorVector< RComplex< ILattice<REAL32,INNER_LEN> >, Nc> > > LatticeColorVectorF;
+typedef OLattice< PScalar< PColorVector< RComplex< ILattice<REAL32,INNER_LEN> >, 8> > > LatticeColorVectorF8;
+typedef OLattice< PScalar< PColorVector< RComplex< ILattice<REAL32,INNER_LEN> >, 6> > > LatticeColorVectorF6;
 typedef OLattice< PScalar< PColorVector< RComplex< ILattice<REAL32,INNER_LEN> >, 3> > > LatticeColorVectorF3;
 typedef OLattice< PScalar< PColorVector< RComplex< ILattice<REAL32,INNER_LEN> >, 2> > > LatticeColorVectorF2;
 typedef OLattice< PScalar< PColorVector< RComplex< ILattice<REAL32,INNER_LEN> >, 1> > > LatticeColorVectorF1;
@@ -260,11 +272,15 @@ typedef OScalar< PSpinMatrix< PScalar< RComplex< IScalar<REAL32> > >, (Ns>>1) > 
 typedef OScalar< PSpinVector< PScalar< RComplex< IScalar<REAL32> > >, Ns> > SpinVectorF;
 
 typedef OScalar< PScalar< PColorMatrix< RComplex< IScalar<REAL32> >, Nc> > > ColorMatrixF;
+typedef OScalar< PScalar< PColorMatrix< RComplex< IScalar<REAL32> >, 8> > > ColorMatrixF8;
+typedef OScalar< PScalar< PColorMatrix< RComplex< IScalar<REAL32> >, 6> > > ColorMatrixF6;
 typedef OScalar< PScalar< PColorMatrix< RComplex< IScalar<REAL32> >, 3> > > ColorMatrixF3;
 typedef OScalar< PScalar< PColorMatrix< RComplex< IScalar<REAL32> >, 2> > > ColorMatrixF2;
 typedef OScalar< PScalar< PColorMatrix< RComplex< IScalar<REAL32> >, 1> > > ColorMatrixF1;
 
 typedef OScalar< PScalar< PColorVector< RComplex< IScalar<REAL32> >, Nc> > > ColorVectorF;
+typedef OScalar< PScalar< PColorVector< RComplex< IScalar<REAL32> >, 8> > > ColorVectorF8;
+typedef OScalar< PScalar< PColorVector< RComplex< IScalar<REAL32> >, 6> > > ColorVectorF6;
 typedef OScalar< PScalar< PColorVector< RComplex< IScalar<REAL32> >, 3> > > ColorVectorF3;
 typedef OScalar< PScalar< PColorVector< RComplex< IScalar<REAL32> >, 2> > > ColorVectorF2;
 typedef OScalar< PScalar< PColorVector< RComplex< IScalar<REAL32> >, 1> > > ColorVectorF1;
@@ -326,11 +342,15 @@ typedef OLattice< PSpinMatrix< PScalar< RComplex< ILattice<REAL64,INNER_LEN> > >
 typedef OLattice< PSpinVector< PScalar< RComplex< ILattice<REAL64,INNER_LEN> > >, Ns> > LatticeSpinVectorD;
 
 typedef OLattice< PScalar< PColorMatrix< RComplex< ILattice<REAL64,INNER_LEN> >, Nc> > > LatticeColorMatrixD;
+typedef OLattice< PScalar< PColorMatrix< RComplex< ILattice<REAL64,INNER_LEN> >, 8> > > LatticeColorMatrixD8;
+typedef OLattice< PScalar< PColorMatrix< RComplex< ILattice<REAL64,INNER_LEN> >, 6> > > LatticeColorMatrixD6;
 typedef OLattice< PScalar< PColorMatrix< RComplex< ILattice<REAL64,INNER_LEN> >, 3> > > LatticeColorMatrixD3;
 typedef OLattice< PScalar< PColorMatrix< RComplex< ILattice<REAL64,INNER_LEN> >, 2> > > LatticeColorMatrixD2;
 typedef OLattice< PScalar< PColorMatrix< RComplex< ILattice<REAL64,INNER_LEN> >, 1> > > LatticeColorMatrixD1;
 
 typedef OLattice< PScalar< PColorVector< RComplex< ILattice<REAL64,INNER_LEN> >, Nc> > > LatticeColorVectorD;
+typedef OLattice< PScalar< PColorVector< RComplex< ILattice<REAL64,INNER_LEN> >, 8> > > LatticeColorVectorD8;
+typedef OLattice< PScalar< PColorVector< RComplex< ILattice<REAL64,INNER_LEN> >, 6> > > LatticeColorVectorD6;
 typedef OLattice< PScalar< PColorVector< RComplex< ILattice<REAL64,INNER_LEN> >, 3> > > LatticeColorVectorD3;
 typedef OLattice< PScalar< PColorVector< RComplex< ILattice<REAL64,INNER_LEN> >, 2> > > LatticeColorVectorD2;
 typedef OLattice< PScalar< PColorVector< RComplex< ILattice<REAL64,INNER_LEN> >, 1> > > LatticeColorVectorD1;
@@ -379,11 +399,15 @@ typedef OScalar< PSpinMatrix< PScalar< RComplex< IScalar<REAL64> > >, (Ns>>1) > 
 typedef OScalar< PSpinVector< PScalar< RComplex< IScalar<REAL64> > >, Ns> > SpinVectorD;
 
 typedef OScalar< PScalar< PColorMatrix< RComplex< IScalar<REAL64> >, Nc> > > ColorMatrixD;
+typedef OScalar< PScalar< PColorMatrix< RComplex< IScalar<REAL64> >, 8> > > ColorMatrixD8;
+typedef OScalar< PScalar< PColorMatrix< RComplex< IScalar<REAL64> >, 6> > > ColorMatrixD6;
 typedef OScalar< PScalar< PColorMatrix< RComplex< IScalar<REAL64> >, 3> > > ColorMatrixD3;
 typedef OScalar< PScalar< PColorMatrix< RComplex< IScalar<REAL64> >, 2> > > ColorMatrixD2;
 typedef OScalar< PScalar< PColorMatrix< RComplex< IScalar<REAL64> >, 1> > > ColorMatrixD1;
 
 typedef OScalar< PScalar< PColorVector< RComplex< IScalar<REAL64> >, Nc> > > ColorVectorD;
+typedef OScalar< PScalar< PColorVector< RComplex< IScalar<REAL64> >, 8> > > ColorVectorD8;
+typedef OScalar< PScalar< PColorVector< RComplex< IScalar<REAL64> >, 6> > > ColorVectorD6;
 typedef OScalar< PScalar< PColorVector< RComplex< IScalar<REAL64> >, 3> > > ColorVectorD3;
 typedef OScalar< PScalar< PColorVector< RComplex< IScalar<REAL64> >, 2> > > ColorVectorD2;
 typedef OScalar< PScalar< PColorVector< RComplex< IScalar<REAL64> >, 1> > > ColorVectorD1;
