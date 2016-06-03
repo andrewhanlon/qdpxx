@@ -354,6 +354,18 @@ binaryOps
   @ingroup group1
   @relates QDPType */"
 -----
+  TAG = "FnColor6CrossProduct"
+  FUNCTION = "color6CrossProduct"
+  EXPR = "return (color6CrossProduct(a,b));"
+  COMMENTA = "//! Cross product of two Nc=3 color vectors to make diquark in 6-dim rep"
+  COMMENTB = "/*! 
+  combination of two Nc=3 color vectors with C matrices
+  @param l  vector
+  @param r  vector
+  @return \f$target^{l} = \sum_{a b}C^{l}_{a b}*source1^{a}*source2^{b}\f$
+  @ingroup group1
+  @relates QDPType */"
+-----
   TAG = "FnColor8CrossProduct"
   FUNCTION = "color8CrossProduct"
   EXPR = "return (color8CrossProduct(a,b));"

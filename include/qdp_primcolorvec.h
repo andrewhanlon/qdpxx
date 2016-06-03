@@ -310,9 +310,39 @@ colorCrossProduct(const PColorVector<T1,3>& s1, const PColorVector<T2,3>& s2)
  return d;
 }
 
+//-----------------------------------------------------------------------------
+// diquark color6 cross product   s1 X s2
+//! Contraction for color vectors
+template<class T1, class T2>
+struct BinaryReturn<PColorVector<T1,3>, PColorVector<T2,3>, FnColor6CrossProduct> {
+  typedef PColorVector<typename BinaryReturn<T1, T2, FnColor6CrossProduct>::Type_t, 6>  Type_t;
+};
+
+//! dest  = color6CrossProduct(Qvec1,Qvec2)
+/*!
+ * Performs:
+ *  \f$dest^{l} = \sum_{a,b} C^{l}_{a,b} V1^{a} V2^{b}\f$
+ *
+ * This routine is completely unrolled for 3 colors
+ */
+template<class T1, class T2>
+inline typename BinaryReturn<PColorVector<T1,3>, PColorVector<T2,3>, FnColor6CrossProduct>::Type_t
+color6CrossProduct(const PColorVector<T1,3>& s1, const PColorVector<T2,3>& s2)
+{
+  typename BinaryReturn<PColorVector<T1,3>, PColorVector<T2,3>, FnColor6CrossProduct>::Type_t  d;
+
+  d.elem(0) = s1.elem(0)*s2.elem(0);
+  d.elem(1) = s1.elem(1)*s2.elem(1);
+  d.elem(2) = s1.elem(2)*s2.elem(2);
+  d.elem(3) = 1./sqrt(2.)*(s1.elem(0)*s2.elem(1) + s1.elem(1)*s2.elem(0));
+  d.elem(4) = 1./sqrt(2.)*(s1.elem(0)*s2.elem(2) + s1.elem(2)*s2.elem(0));
+  d.elem(5) = 1./sqrt(2.)*(s1.elem(1)*s2.elem(2) + s1.elem(2)*s2.elem(1));
+
+ return d;
+}
 
 //-----------------------------------------------------------------------------
-// diquark color cross product (8-dim)   s1 X s2
+// diquark color8 cross product   s1 X s2
 //! Contraction for color vectors
 template<class T1, class T2>
 struct BinaryReturn<PColorVector<T1,3>, PColorVector<T2,3>, FnColor8CrossProduct> {
@@ -332,13 +362,15 @@ color8CrossProduct(const PColorVector<T1,3>& s1, const PColorVector<T2,3>& s2)
 {
   typename BinaryReturn<PColorVector<T1,3>, PColorVector<T2,3>, FnColor8CrossProduct>::Type_t  d;
 
+  std::complex<double> nI (0.0,-1.0);
+
   d.elem(0) = s1.elem(0)*s2.elem(1) + s1.elem(1)*s2.elem(0);
-  d.elem(1) = cmplx(zero,-one)*(s1.elem(0)*s2.elem(1) - s1.elem(1)*s2.elem(0));
+  d.elem(1) = nI*(s1.elem(0)*s2.elem(1) - s1.elem(1)*s2.elem(0));
   d.elem(2) = s1.elem(0)*s2.elem(0) - s1.elem(1)*s2.elem(1);
   d.elem(3) = s1.elem(0)*s2.elem(2) + s1.elem(2)*s2.elem(0);
-  d.elem(4) = cmplx(zero,-one)*(s1.elem(0)*s2.elem(2) - s1.elem(2)*s2.elem(0));
+  d.elem(4) = nI*(s1.elem(0)*s2.elem(2) - s1.elem(2)*s2.elem(0));
   d.elem(5) = s1.elem(1)*s2.elem(2) + s1.elem(2)*s2.elem(1);
-  d.elem(6) = cmplx(zero,-one)*(s1.elem(1)*s2.elem(2) - s1.elem(2)*s2.elem(1));
+  d.elem(6) = nI*(s1.elem(1)*s2.elem(2) - s1.elem(2)*s2.elem(1));
   d.elem(7) = 1./sqrt(3.)*(s1.elem(0)*s2.elem(0) + s1.elem(1)*s2.elem(1) - 2*s1.elem(2)*s2.elem(2));
 
  return d;
