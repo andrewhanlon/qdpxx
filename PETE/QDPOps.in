@@ -354,6 +354,18 @@ binaryOps
   @ingroup group1
   @relates QDPType */"
 -----
+  TAG = "FnColor8CrossProduct"
+  FUNCTION = "color8CrossProduct"
+  EXPR = "return (color8CrossProduct(a,b));"
+  COMMENTA = "//! Cross product of two Nc=3 color vectors to make diquark in 8-dim rep"
+  COMMENTB = "/*! 
+  combination of two Nc=3 color vectors with the Gell-Mann matrices
+  @param l  vector
+  @param r  vector
+  @return \f$target^{i} = \sum_{a,b} \lambda^{i}_{a,b} V1^{a} V2^{b}\f$
+  @ingroup group1
+  @relates QDPType */"
+-----
   TAG = "FnLocalInnerProduct"
   FUNCTION = "localInnerProduct"
   EXPR = "return (localInnerProduct(a,b));"

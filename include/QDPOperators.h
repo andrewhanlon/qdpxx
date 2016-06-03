@@ -1,4 +1,5 @@
 // -*- C++ -*-
+// $Id: Header.h,v 1.3 2002-10-14 02:06:56 edwards Exp $
 
 /*! @file
  * @brief Bulk of QDP operators produced by PETE
@@ -436,6 +437,17 @@ struct FnColorCrossProduct
   operator()(const T1 &a, const T2 &b) const
   {
     return (colorCrossProduct(a,b));
+  }
+};
+
+struct FnColor8CrossProduct
+{
+  PETE_EMPTY_CONSTRUCTORS(FnColor8CrossProduct)
+  template<class T1, class T2>
+  inline typename BinaryReturn<T1, T2, FnColor8CrossProduct >::Type_t
+  operator()(const T1 &a, const T2 &b) const
+  {
+    return (color8CrossProduct(a,b));
   }
 };
 
@@ -1591,6 +1603,30 @@ colorCrossProduct(const QDPType<T1,C1> & l,const QDPType<T2,C2> & r)
     CreateLeaf<QDPType<T2,C2> >::make(r)));
 }
 
+//! Cross product of two Nc=3 color vectors to make diquark in 8-dim rep
+/*! 
+  combination of two Nc=3 color vectors with the Gell-Mann matrices
+  @param l  vector
+  @param r  vector
+  @return \f$target^{i} = \sum_{a,b} \lambda^{i}_{a,b} V1^{a} V2^{b}\f$
+  @ingroup group1
+  @relates QDPType */
+template<class T1,class C1,class T2,class C2>
+inline typename MakeReturn<BinaryNode<FnColor8CrossProduct,
+  typename CreateLeaf<QDPType<T1,C1> >::Leaf_t,
+  typename CreateLeaf<QDPType<T2,C2> >::Leaf_t>,
+  typename BinaryReturn<C1,C2,FnColor8CrossProduct>::Type_t >::Expression_t
+color8CrossProduct(const QDPType<T1,C1> & l,const QDPType<T2,C2> & r)
+{
+  typedef BinaryNode<FnColor8CrossProduct,
+    typename CreateLeaf<QDPType<T1,C1> >::Leaf_t,
+    typename CreateLeaf<QDPType<T2,C2> >::Leaf_t> Tree_t;
+  typedef typename BinaryReturn<C1,C2,FnColor8CrossProduct>::Type_t Container_t;
+  return MakeReturn<Tree_t,Container_t>::make(Tree_t(
+    CreateLeaf<QDPType<T1,C1> >::make(l),
+    CreateLeaf<QDPType<T2,C2> >::make(r)));
+}
+
 //! InnerProduct on only fiber indices
 /*! L2 norm only fiber indices
   @sa adj(), trace()
@@ -2370,6 +2406,22 @@ colorCrossProduct(const QDPType<T1,C1> & l,const QDPExpr<T2,C2> & r)
 }
 
 template<class T1,class C1,class T2,class C2>
+inline typename MakeReturn<BinaryNode<FnColor8CrossProduct,
+  typename CreateLeaf<QDPType<T1,C1> >::Leaf_t,
+  typename CreateLeaf<QDPExpr<T2,C2> >::Leaf_t>,
+  typename BinaryReturn<C1,C2,FnColor8CrossProduct>::Type_t >::Expression_t
+color8CrossProduct(const QDPType<T1,C1> & l,const QDPExpr<T2,C2> & r)
+{
+  typedef BinaryNode<FnColor8CrossProduct,
+    typename CreateLeaf<QDPType<T1,C1> >::Leaf_t,
+    typename CreateLeaf<QDPExpr<T2,C2> >::Leaf_t> Tree_t;
+  typedef typename BinaryReturn<C1,C2,FnColor8CrossProduct>::Type_t Container_t;
+  return MakeReturn<Tree_t,Container_t>::make(Tree_t(
+    CreateLeaf<QDPType<T1,C1> >::make(l),
+    CreateLeaf<QDPExpr<T2,C2> >::make(r)));
+}
+
+template<class T1,class C1,class T2,class C2>
 inline typename MakeReturn<BinaryNode<FnLocalInnerProduct,
   typename CreateLeaf<QDPType<T1,C1> >::Leaf_t,
   typename CreateLeaf<QDPExpr<T2,C2> >::Leaf_t>,
@@ -2908,6 +2960,22 @@ colorCrossProduct(const QDPExpr<T1,C1> & l,const QDPType<T2,C2> & r)
     typename CreateLeaf<QDPExpr<T1,C1> >::Leaf_t,
     typename CreateLeaf<QDPType<T2,C2> >::Leaf_t> Tree_t;
   typedef typename BinaryReturn<C1,C2,FnColorCrossProduct>::Type_t Container_t;
+  return MakeReturn<Tree_t,Container_t>::make(Tree_t(
+    CreateLeaf<QDPExpr<T1,C1> >::make(l),
+    CreateLeaf<QDPType<T2,C2> >::make(r)));
+}
+
+template<class T1,class C1,class T2,class C2>
+inline typename MakeReturn<BinaryNode<FnColor8CrossProduct,
+  typename CreateLeaf<QDPExpr<T1,C1> >::Leaf_t,
+  typename CreateLeaf<QDPType<T2,C2> >::Leaf_t>,
+  typename BinaryReturn<C1,C2,FnColor8CrossProduct>::Type_t >::Expression_t
+color8CrossProduct(const QDPExpr<T1,C1> & l,const QDPType<T2,C2> & r)
+{
+  typedef BinaryNode<FnColor8CrossProduct,
+    typename CreateLeaf<QDPExpr<T1,C1> >::Leaf_t,
+    typename CreateLeaf<QDPType<T2,C2> >::Leaf_t> Tree_t;
+  typedef typename BinaryReturn<C1,C2,FnColor8CrossProduct>::Type_t Container_t;
   return MakeReturn<Tree_t,Container_t>::make(Tree_t(
     CreateLeaf<QDPExpr<T1,C1> >::make(l),
     CreateLeaf<QDPType<T2,C2> >::make(r)));
@@ -3458,6 +3526,22 @@ colorCrossProduct(const QDPType<T1,C1> & l,const typename WordType<C1>::Type_t &
 }
 
 template<class T1,class C1>
+inline typename MakeReturn<BinaryNode<FnColor8CrossProduct,
+  typename CreateLeaf<QDPType<T1,C1> >::Leaf_t,
+  typename CreateLeaf<typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t >::Leaf_t>,
+  typename BinaryReturn<C1,typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t,FnColor8CrossProduct>::Type_t >::Expression_t
+color8CrossProduct(const QDPType<T1,C1> & l,const typename WordType<C1>::Type_t & r)
+{
+  typedef BinaryNode<FnColor8CrossProduct,
+    typename CreateLeaf<QDPType<T1,C1> >::Leaf_t,
+    typename CreateLeaf<typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t >::Leaf_t> Tree_t;
+  typedef typename BinaryReturn<C1,typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t,FnColor8CrossProduct>::Type_t Container_t;
+  return MakeReturn<Tree_t,Container_t>::make(Tree_t(
+    CreateLeaf<QDPType<T1,C1> >::make(l),
+    CreateLeaf<typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t >::make(typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t(r))));
+}
+
+template<class T1,class C1>
 inline typename MakeReturn<BinaryNode<FnLocalInnerProduct,
   typename CreateLeaf<QDPType<T1,C1> >::Leaf_t,
   typename CreateLeaf<typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t >::Leaf_t>,
@@ -3996,6 +4080,22 @@ colorCrossProduct(const typename WordType<C2>::Type_t & l,const QDPType<T2,C2> &
     typename CreateLeaf<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t >::Leaf_t,
     typename CreateLeaf<QDPType<T2,C2> >::Leaf_t> Tree_t;
   typedef typename BinaryReturn<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t,C2,FnColorCrossProduct>::Type_t Container_t;
+  return MakeReturn<Tree_t,Container_t>::make(Tree_t(
+    CreateLeaf<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t >::make(typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t(l)),
+    CreateLeaf<QDPType<T2,C2> >::make(r)));
+}
+
+template<class T2,class C2>
+inline typename MakeReturn<BinaryNode<FnColor8CrossProduct,
+  typename CreateLeaf<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t >::Leaf_t,
+  typename CreateLeaf<QDPType<T2,C2> >::Leaf_t>,
+  typename BinaryReturn<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t,C2,FnColor8CrossProduct>::Type_t >::Expression_t
+color8CrossProduct(const typename WordType<C2>::Type_t & l,const QDPType<T2,C2> & r)
+{
+  typedef BinaryNode<FnColor8CrossProduct,
+    typename CreateLeaf<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t >::Leaf_t,
+    typename CreateLeaf<QDPType<T2,C2> >::Leaf_t> Tree_t;
+  typedef typename BinaryReturn<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t,C2,FnColor8CrossProduct>::Type_t Container_t;
   return MakeReturn<Tree_t,Container_t>::make(Tree_t(
     CreateLeaf<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t >::make(typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t(l)),
     CreateLeaf<QDPType<T2,C2> >::make(r)));
@@ -5516,6 +5616,22 @@ colorCrossProduct(const QDPExpr<T1,C1> & l,const QDPExpr<T2,C2> & r)
 }
 
 template<class T1,class C1,class T2,class C2>
+inline typename MakeReturn<BinaryNode<FnColor8CrossProduct,
+  typename CreateLeaf<QDPExpr<T1,C1> >::Leaf_t,
+  typename CreateLeaf<QDPExpr<T2,C2> >::Leaf_t>,
+  typename BinaryReturn<C1,C2,FnColor8CrossProduct>::Type_t >::Expression_t
+color8CrossProduct(const QDPExpr<T1,C1> & l,const QDPExpr<T2,C2> & r)
+{
+  typedef BinaryNode<FnColor8CrossProduct,
+    typename CreateLeaf<QDPExpr<T1,C1> >::Leaf_t,
+    typename CreateLeaf<QDPExpr<T2,C2> >::Leaf_t> Tree_t;
+  typedef typename BinaryReturn<C1,C2,FnColor8CrossProduct>::Type_t Container_t;
+  return MakeReturn<Tree_t,Container_t>::make(Tree_t(
+    CreateLeaf<QDPExpr<T1,C1> >::make(l),
+    CreateLeaf<QDPExpr<T2,C2> >::make(r)));
+}
+
+template<class T1,class C1,class T2,class C2>
 inline typename MakeReturn<BinaryNode<FnLocalInnerProduct,
   typename CreateLeaf<QDPExpr<T1,C1> >::Leaf_t,
   typename CreateLeaf<QDPExpr<T2,C2> >::Leaf_t>,
@@ -6098,6 +6214,22 @@ colorCrossProduct(const QDPExpr<T1,C1> & l,const typename WordType<C1>::Type_t &
 }
 
 template<class T1,class C1>
+inline typename MakeReturn<BinaryNode<FnColor8CrossProduct,
+  typename CreateLeaf<QDPExpr<T1,C1> >::Leaf_t,
+  typename CreateLeaf<typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t >::Leaf_t>,
+  typename BinaryReturn<C1,typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t,FnColor8CrossProduct>::Type_t >::Expression_t
+color8CrossProduct(const QDPExpr<T1,C1> & l,const typename WordType<C1>::Type_t & r)
+{
+  typedef BinaryNode<FnColor8CrossProduct,
+    typename CreateLeaf<QDPExpr<T1,C1> >::Leaf_t,
+    typename CreateLeaf<typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t >::Leaf_t> Tree_t;
+  typedef typename BinaryReturn<C1,typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t,FnColor8CrossProduct>::Type_t Container_t;
+  return MakeReturn<Tree_t,Container_t>::make(Tree_t(
+    CreateLeaf<QDPExpr<T1,C1> >::make(l),
+    CreateLeaf<typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t >::make(typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t(r))));
+}
+
+template<class T1,class C1>
 inline typename MakeReturn<BinaryNode<FnLocalInnerProduct,
   typename CreateLeaf<QDPExpr<T1,C1> >::Leaf_t,
   typename CreateLeaf<typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t >::Leaf_t>,
@@ -6636,6 +6768,22 @@ colorCrossProduct(const typename WordType<C2>::Type_t & l,const QDPExpr<T2,C2> &
     typename CreateLeaf<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t >::Leaf_t,
     typename CreateLeaf<QDPExpr<T2,C2> >::Leaf_t> Tree_t;
   typedef typename BinaryReturn<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t,C2,FnColorCrossProduct>::Type_t Container_t;
+  return MakeReturn<Tree_t,Container_t>::make(Tree_t(
+    CreateLeaf<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t >::make(typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t(l)),
+    CreateLeaf<QDPExpr<T2,C2> >::make(r)));
+}
+
+template<class T2,class C2>
+inline typename MakeReturn<BinaryNode<FnColor8CrossProduct,
+  typename CreateLeaf<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t >::Leaf_t,
+  typename CreateLeaf<QDPExpr<T2,C2> >::Leaf_t>,
+  typename BinaryReturn<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t,C2,FnColor8CrossProduct>::Type_t >::Expression_t
+color8CrossProduct(const typename WordType<C2>::Type_t & l,const QDPExpr<T2,C2> & r)
+{
+  typedef BinaryNode<FnColor8CrossProduct,
+    typename CreateLeaf<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t >::Leaf_t,
+    typename CreateLeaf<QDPExpr<T2,C2> >::Leaf_t> Tree_t;
+  typedef typename BinaryReturn<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t,C2,FnColor8CrossProduct>::Type_t Container_t;
   return MakeReturn<Tree_t,Container_t>::make(Tree_t(
     CreateLeaf<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t >::make(typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t(l)),
     CreateLeaf<QDPExpr<T2,C2> >::make(r)));

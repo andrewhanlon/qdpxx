@@ -311,6 +311,38 @@ colorCrossProduct(const PColorVector<T1,3>& s1, const PColorVector<T2,3>& s2)
 }
 
 
+//-----------------------------------------------------------------------------
+// diquark color cross product (8-dim)   s1 X s2
+//! Contraction for color vectors
+template<class T1, class T2>
+struct BinaryReturn<PColorVector<T1,3>, PColorVector<T2,3>, FnColor8CrossProduct> {
+  typedef PColorVector<typename BinaryReturn<T1, T2, FnColor8CrossProduct>::Type_t, 8>  Type_t;
+};
+
+//! dest  = color8CrossProduct(Qvec1,Qvec2)
+/*!
+ * Performs:
+ *  \f$dest^{i} = \sum_{a,b} \lambda^{i}_{a,b} V1^{a} V2^{b}\f$
+ *
+ * This routine is completely unrolled for 3 colors
+ */
+template<class T1, class T2>
+inline typename BinaryReturn<PColorVector<T1,3>, PColorVector<T2,3>, FnColor8CrossProduct>::Type_t
+color8CrossProduct(const PColorVector<T1,3>& s1, const PColorVector<T2,3>& s2)
+{
+  typename BinaryReturn<PColorVector<T1,3>, PColorVector<T2,3>, FnColor8CrossProduct>::Type_t  d;
+
+  d.elem(0) = s1.elem(0)*s2.elem(1) + s1.elem(1)*s2.elem(0);
+  d.elem(1) = cmplx(zero,-one)*(s1.elem(0)*s2.elem(1) - s1.elem(1)*s2.elem(0));
+  d.elem(2) = s1.elem(0)*s2.elem(0) - s1.elem(1)*s2.elem(1);
+  d.elem(3) = s1.elem(0)*s2.elem(2) + s1.elem(2)*s2.elem(0);
+  d.elem(4) = cmplx(zero,-one)*(s1.elem(0)*s2.elem(2) - s1.elem(2)*s2.elem(0));
+  d.elem(5) = s1.elem(1)*s2.elem(2) + s1.elem(2)*s2.elem(1);
+  d.elem(6) = cmplx(zero,-one)*(s1.elem(1)*s2.elem(2) - s1.elem(2)*s2.elem(1));
+  d.elem(7) = 1./sqrt(3.)*(s1.elem(0)*s2.elem(0) + s1.elem(1)*s2.elem(1) - 2*s1.elem(2)*s2.elem(2));
+
+ return d;
+}
 
 } // namespace QDP
 
