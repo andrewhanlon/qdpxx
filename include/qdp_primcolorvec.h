@@ -331,12 +331,14 @@ color6CrossProduct(const PColorVector<T1,3>& s1, const PColorVector<T2,3>& s2)
 {
   typename BinaryReturn<PColorVector<T1,3>, PColorVector<T2,3>, FnColor6CrossProduct>::Type_t  d;
 
+  T1 coef(1./QDP::sqrt(2.),0.);
+
   d.elem(0) = s1.elem(0)*s2.elem(0);
   d.elem(1) = s1.elem(1)*s2.elem(1);
   d.elem(2) = s1.elem(2)*s2.elem(2);
-  d.elem(3) = 1./sqrt(2.)*(s1.elem(0)*s2.elem(1) + s1.elem(1)*s2.elem(0));
-  d.elem(4) = 1./sqrt(2.)*(s1.elem(0)*s2.elem(2) + s1.elem(2)*s2.elem(0));
-  d.elem(5) = 1./sqrt(2.)*(s1.elem(1)*s2.elem(2) + s1.elem(2)*s2.elem(1));
+  d.elem(3) = coef*(s1.elem(0)*s2.elem(1) + s1.elem(1)*s2.elem(0));
+  d.elem(4) = coef*(s1.elem(0)*s2.elem(2) + s1.elem(2)*s2.elem(0));
+  d.elem(5) = coef*(s1.elem(1)*s2.elem(2) + s1.elem(2)*s2.elem(1));
 
  return d;
 }
@@ -362,7 +364,9 @@ color8CrossProduct(const PColorVector<T1,3>& s1, const PColorVector<T2,3>& s2)
 {
   typename BinaryReturn<PColorVector<T1,3>, PColorVector<T2,3>, FnColor8CrossProduct>::Type_t  d;
 
-  std::complex<double> nI (0.0,-1.0);
+  T1 nI(0.,-1.);
+  T1 sqrt3(1./QDP::sqrt(3.),0.);
+  T1 coef2(2.,0.);
 
   d.elem(0) = s1.elem(0)*s2.elem(1) + s1.elem(1)*s2.elem(0);
   d.elem(1) = nI*(s1.elem(0)*s2.elem(1) - s1.elem(1)*s2.elem(0));
@@ -371,7 +375,7 @@ color8CrossProduct(const PColorVector<T1,3>& s1, const PColorVector<T2,3>& s2)
   d.elem(4) = nI*(s1.elem(0)*s2.elem(2) - s1.elem(2)*s2.elem(0));
   d.elem(5) = s1.elem(1)*s2.elem(2) + s1.elem(2)*s2.elem(1);
   d.elem(6) = nI*(s1.elem(1)*s2.elem(2) - s1.elem(2)*s2.elem(1));
-  d.elem(7) = 1./sqrt(3.)*(s1.elem(0)*s2.elem(0) + s1.elem(1)*s2.elem(1) - 2*s1.elem(2)*s2.elem(2));
+  d.elem(7) = sqrt3*(s1.elem(0)*s2.elem(0) + s1.elem(1)*s2.elem(1) - coef2*s1.elem(2)*s2.elem(2));
 
  return d;
 }
