@@ -762,6 +762,58 @@ quarkContractXX(const PColorMatrix<T1,4>& s1, const PColorMatrix<T2,4>& s2)
   return d ; 
 }
 
+//-----------------------------------------------------------------------------
+//  color6 matrix product   s1 X s2
+template<class T1, class T2>
+struct BinaryReturn<PColorMatrix<T1,3>, PColorMatrix<T2,3>, FnColor6MatrixProduct> {
+  typedef PColorMatrix<typename BinaryReturn<T1, T2, FnColor6MatrixProduct>::Type_t, 6>  Type_t;
+};
+
+//! dest  = color6MatrixProduct(Qmat1,Qmat2)
+/*!
+ * Performs:
+ *  \f$dest^{l,m} = C^{l}_{a b}*source1_{a,c}*source2_{b,d}*C^{m}_{c,d}\f$
+ *
+ * This routine is completely unrolled for 3 colors
+ */
+template<class T1, class T2>
+inline typename BinaryReturn<PColorMatrix<T1,3>, PColorMatrix<T2,3>, FnColor6MatrixProduct>::Type_t
+color6MatrixProduct(const PColorMatrix<T1,3>& s1, const PColorMatrix<T2,3>& s2)
+{
+  typename BinaryReturn<PColorMatrix<T1,3>, PColorMatrix<T2,3>, FnColor6MatrixProduct>::Type_t  d;
+
+  T1 coef(1./QDP::sqrt(2.),0.);
+
+  d.elem(0,0) = s1.elem(0,1)*s2.elem(1,0);
+
+ return d;
+}
+
+//-----------------------------------------------------------------------------
+// color8 matrix product   s1 X s2
+template<class T1, class T2>
+struct BinaryReturn<PColorMatrix<T1,3>, PColorMatrix<T2,3>, FnColor8MatrixProduct> {
+  typedef PColorMatrix<typename BinaryReturn<T1, T2, FnColor8MatrixProduct>::Type_t, 8>  Type_t;
+};
+
+//! dest  = color8MatrixProduct(Qvec1,Qvec2)
+/*!
+ * Performs:
+ *  \f$dest^{i,j} = \lambda^{i}_{a,b}*source1_{a,c}*\lambda^{j}_{c,d}*adj(source2_{d,b})\f$ 
+ *
+ * This routine is completely unrolled for 3 colors
+ */
+template<class T1, class T2>
+inline typename BinaryReturn<PColorMatrix<T1,3>, PColorMatrix<T2,3>, FnColor8MatrixProduct>::Type_t
+color8VectorProduct(const PColorMatrix<T1,3>& s1, const PColorMatrix<T2,3>& s2)
+{
+  typename BinaryReturn<PColorMatrix<T1,3>, PColorMatrix<T2,3>, FnColor8MatrixProduct>::Type_t  d;
+
+  d.elem(0,0) = s1.elem(0,1)*s2.elem(1,0);
+
+ return d;
+}
+
 
 /*! @} */   // end of group primcolormatrix
 

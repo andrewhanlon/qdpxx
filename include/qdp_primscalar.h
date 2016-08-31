@@ -1371,35 +1371,64 @@ colorCrossProduct(const PScalar<T1>& s1, const PScalar<T2>& s2)
 }
 
 //-----------------------------------------------------------------------------
-// 6-dimensional cross product for color vectors
-//! dest  = color6CrossProduct(Qvec1,Qvec2)
+// 6-dimensional vector product for color vectors
+//! dest  = color6VectorProduct(Qvec1,Qvec2)
 template<class T1, class T2>
-struct BinaryReturn<PScalar<T1>, PScalar<T2>, FnColor6CrossProduct> {
-  typedef PScalar<typename BinaryReturn<T1, T2, FnColor6CrossProduct>::Type_t>  Type_t;
+struct BinaryReturn<PScalar<T1>, PScalar<T2>, FnColor6VectorProduct> {
+  typedef PScalar<typename BinaryReturn<T1, T2, FnColor6VectorProduct>::Type_t>  Type_t;
 };
 
 template<class T1, class T2>
-inline typename BinaryReturn<PScalar<T1>, PScalar<T2>, FnColor6CrossProduct>::Type_t
-color6CrossProduct(const PScalar<T1>& s1, const PScalar<T2>& s2)
+inline typename BinaryReturn<PScalar<T1>, PScalar<T2>, FnColor6VectorProduct>::Type_t
+color6VectorProduct(const PScalar<T1>& s1, const PScalar<T2>& s2)
 {
-  return color6CrossProduct(s1.elem(), s2.elem());
+  return color6VectorProduct(s1.elem(), s2.elem());
 }
 
 //-----------------------------------------------------------------------------
-// 8-dimensional cross product for color vectors
-//! dest  = color8CrossProduct(Qvec1,Qvec2)
+// 8-dimensional vector product for color vectors
+//! dest  = color8VectorProduct(Qvec1,Qvec2)
 template<class T1, class T2>
-struct BinaryReturn<PScalar<T1>, PScalar<T2>, FnColor8CrossProduct> {
-  typedef PScalar<typename BinaryReturn<T1, T2, FnColor8CrossProduct>::Type_t>  Type_t;
+struct BinaryReturn<PScalar<T1>, PScalar<T2>, FnColor8VectorProduct> {
+  typedef PScalar<typename BinaryReturn<T1, T2, FnColor8VectorProduct>::Type_t>  Type_t;
 };
 
 template<class T1, class T2>
-inline typename BinaryReturn<PScalar<T1>, PScalar<T2>, FnColor8CrossProduct>::Type_t
-color8CrossProduct(const PScalar<T1>& s1, const PScalar<T2>& s2)
+inline typename BinaryReturn<PScalar<T1>, PScalar<T2>, FnColor8VectorProduct>::Type_t
+color8VectorProduct(const PScalar<T1>& s1, const PScalar<T2>& s2)
 {
-  return color8CrossProduct(s1.elem(), s2.elem());
+  return color8VectorProduct(s1.elem(), s2.elem());
 }
 
+//-----------------------------------------------------------------------------
+// 6-dimensional matrix product for color matrices
+//! dest  = color6MatrixProduct(Qmat1,Qmat2)
+template<class T1, class T2>
+struct BinaryReturn<PScalar<T1>, PScalar<T2>, FnColor6MatrixProduct> {
+  typedef PScalar<typename BinaryReturn<T1, T2, FnColor6MatrixProduct>::Type_t>  Type_t;
+};
+
+template<class T1, class T2>
+inline typename BinaryReturn<PScalar<T1>, PScalar<T2>, FnColor6MatrixProduct>::Type_t
+color6MatrixProduct(const PScalar<T1>& s1, const PScalar<T2>& s2)
+{
+  return color6MatrixProduct(s1.elem(), s2.elem());
+}
+
+//-----------------------------------------------------------------------------
+// 8-dimensional matrix product for color matrices
+//! dest  = color8MatrixProduct(Qmat1,Qmat2)
+template<class T1, class T2>
+struct BinaryReturn<PScalar<T1>, PScalar<T2>, FnColor8MatrixProduct> {
+  typedef PScalar<typename BinaryReturn<T1, T2, FnColor8MatrixProduct>::Type_t>  Type_t;
+};
+
+template<class T1, class T2>
+inline typename BinaryReturn<PScalar<T1>, PScalar<T2>, FnColor8MatrixProduct>::Type_t
+color8MatrixProduct(const PScalar<T1>& s1, const PScalar<T2>& s2)
+{
+  return color8MatrixProduct(s1.elem(), s2.elem());
+}
 
 //-----------------------------------------------------------------------------
 //! dest = (mask) ? s1 : dest

@@ -311,14 +311,14 @@ colorCrossProduct(const PColorVector<T1,3>& s1, const PColorVector<T2,3>& s2)
 }
 
 //-----------------------------------------------------------------------------
-// diquark color6 cross product   s1 X s2
+// diquark color6 vector product   s1 X s2
 //! Contraction for color vectors
 template<class T1, class T2>
-struct BinaryReturn<PColorVector<T1,3>, PColorVector<T2,3>, FnColor6CrossProduct> {
-  typedef PColorVector<typename BinaryReturn<T1, T2, FnColor6CrossProduct>::Type_t, 6>  Type_t;
+struct BinaryReturn<PColorVector<T1,3>, PColorVector<T2,3>, FnColor6VectorProduct> {
+  typedef PColorVector<typename BinaryReturn<T1, T2, FnColor6VectorProduct>::Type_t, 6>  Type_t;
 };
 
-//! dest  = color6CrossProduct(Qvec1,Qvec2)
+//! dest  = color6VectorProduct(Qvec1,Qvec2)
 /*!
  * Performs:
  *  \f$dest^{l} = \sum_{a,b} C^{l}_{a,b} V1^{a} V2^{b}\f$
@@ -326,10 +326,10 @@ struct BinaryReturn<PColorVector<T1,3>, PColorVector<T2,3>, FnColor6CrossProduct
  * This routine is completely unrolled for 3 colors
  */
 template<class T1, class T2>
-inline typename BinaryReturn<PColorVector<T1,3>, PColorVector<T2,3>, FnColor6CrossProduct>::Type_t
-color6CrossProduct(const PColorVector<T1,3>& s1, const PColorVector<T2,3>& s2)
+inline typename BinaryReturn<PColorVector<T1,3>, PColorVector<T2,3>, FnColor6VectorProduct>::Type_t
+color6VectorProduct(const PColorVector<T1,3>& s1, const PColorVector<T2,3>& s2)
 {
-  typename BinaryReturn<PColorVector<T1,3>, PColorVector<T2,3>, FnColor6CrossProduct>::Type_t  d;
+  typename BinaryReturn<PColorVector<T1,3>, PColorVector<T2,3>, FnColor6VectorProduct>::Type_t  d;
 
   T1 coef(1./QDP::sqrt(2.),0.);
 
@@ -344,14 +344,14 @@ color6CrossProduct(const PColorVector<T1,3>& s1, const PColorVector<T2,3>& s2)
 }
 
 //-----------------------------------------------------------------------------
-// diquark color8 cross product   s1 X s2
+// diquark color8 vector product   s1 X s2
 //! Contraction for color vectors
 template<class T1, class T2>
-struct BinaryReturn<PColorVector<T1,3>, PColorVector<T2,3>, FnColor8CrossProduct> {
-  typedef PColorVector<typename BinaryReturn<T1, T2, FnColor8CrossProduct>::Type_t, 8>  Type_t;
+struct BinaryReturn<PColorVector<T1,3>, PColorVector<T2,3>, FnColor8VectorProduct> {
+  typedef PColorVector<typename BinaryReturn<T1, T2, FnColor8VectorProduct>::Type_t, 8>  Type_t;
 };
 
-//! dest  = color8CrossProduct(Qvec1,Qvec2)
+//! dest  = color8VectorProduct(Qvec1,Qvec2)
 /*!
  * Performs:
  *  \f$dest^{i} = \sum_{a,b} \lambda^{i}_{a,b} V1^{a} V2^{b}\f$
@@ -359,10 +359,10 @@ struct BinaryReturn<PColorVector<T1,3>, PColorVector<T2,3>, FnColor8CrossProduct
  * This routine is completely unrolled for 3 colors
  */
 template<class T1, class T2>
-inline typename BinaryReturn<PColorVector<T1,3>, PColorVector<T2,3>, FnColor8CrossProduct>::Type_t
-color8CrossProduct(const PColorVector<T1,3>& s1, const PColorVector<T2,3>& s2)
+inline typename BinaryReturn<PColorVector<T1,3>, PColorVector<T2,3>, FnColor8VectorProduct>::Type_t
+color8VectorProduct(const PColorVector<T1,3>& s1, const PColorVector<T2,3>& s2)
 {
-  typename BinaryReturn<PColorVector<T1,3>, PColorVector<T2,3>, FnColor8CrossProduct>::Type_t  d;
+  typename BinaryReturn<PColorVector<T1,3>, PColorVector<T2,3>, FnColor8VectorProduct>::Type_t  d;
 
   T1 nI(0.,-1.);
   T1 sqrt3(1./QDP::sqrt(3.),0.);
