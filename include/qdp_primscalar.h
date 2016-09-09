@@ -1401,33 +1401,33 @@ color8VectorProduct(const PScalar<T1>& s1, const PScalar<T2>& s2)
 }
 
 //-----------------------------------------------------------------------------
-// 6-dimensional matrix product for color matrices
-//! dest  = color6MatrixProduct(Qmat1,Qmat2)
-template<class T1, class T2>
-struct BinaryReturn<PScalar<T1>, PScalar<T2>, FnColor6MatrixProduct> {
-  typedef PScalar<typename BinaryReturn<T1, T2, FnColor6MatrixProduct>::Type_t>  Type_t;
+// 6-dimensional gauge links
+//! dest  = color6GaugeLink(Qmat)
+template<class T>
+struct UnaryReturn<PScalar<T>, FnColor6GaugeLink> {
+  typedef PScalar<typename UnaryReturn<T, FnColor6GaugeLink>::Type_t>  Type_t;
 };
 
-template<class T1, class T2>
-inline typename BinaryReturn<PScalar<T1>, PScalar<T2>, FnColor6MatrixProduct>::Type_t
-color6MatrixProduct(const PScalar<T1>& s1, const PScalar<T2>& s2)
+template<class T>
+inline typename UnaryReturn<PScalar<T>, FnColor6GaugeLink>::Type_t
+color6GaugeLink(const PScalar<T>& s)
 {
-  return color6MatrixProduct(s1.elem(), s2.elem());
+  return color6GaugeLink(s.elem());
 }
 
 //-----------------------------------------------------------------------------
-// 8-dimensional matrix product for color matrices
-//! dest  = color8MatrixProduct(Qmat1,Qmat2)
-template<class T1, class T2>
-struct BinaryReturn<PScalar<T1>, PScalar<T2>, FnColor8MatrixProduct> {
-  typedef PScalar<typename BinaryReturn<T1, T2, FnColor8MatrixProduct>::Type_t>  Type_t;
+// 8-dimensional gauge links
+//! dest  = color8GaugeLink(Qmat)
+template<class T>
+struct UnaryReturn<PScalar<T>, FnColor8GaugeLink> {
+  typedef PScalar<typename UnaryReturn<T, FnColor8GaugeLink>::Type_t>  Type_t;
 };
 
-template<class T1, class T2>
-inline typename BinaryReturn<PScalar<T1>, PScalar<T2>, FnColor8MatrixProduct>::Type_t
-color8MatrixProduct(const PScalar<T1>& s1, const PScalar<T2>& s2)
+template<class T>
+inline typename UnaryReturn<PScalar<T>, FnColor8GaugeLink>::Type_t
+color8GaugeLink(const PScalar<T>& s)
 {
-  return color8MatrixProduct(s1.elem(), s2.elem());
+  return color8GaugeLink(s.elem());
 }
 
 //-----------------------------------------------------------------------------

@@ -396,6 +396,28 @@ struct FnChiralProjectMinus
   }
 };
 
+struct FnColor6GaugeLink
+{
+  PETE_EMPTY_CONSTRUCTORS(FnColor6GaugeLink)
+  template<class T>
+  inline typename UnaryReturn<T, FnColor6GaugeLink >::Type_t
+  operator()(const T &a) const
+  {
+    return (color6GaugeLink(a));
+  }
+};
+
+struct FnColor8GaugeLink
+{
+  PETE_EMPTY_CONSTRUCTORS(FnColor8GaugeLink)
+  template<class T>
+  inline typename UnaryReturn<T, FnColor8GaugeLink >::Type_t
+  operator()(const T &a) const
+  {
+    return (color8GaugeLink(a));
+  }
+};
+
 struct FnCmplx
 {
   PETE_EMPTY_CONSTRUCTORS(FnCmplx)
@@ -459,28 +481,6 @@ struct FnColor8VectorProduct
   operator()(const T1 &a, const T2 &b) const
   {
     return (color8VectorProduct(a,b));
-  }
-};
-
-struct FnColor8MatrixProduct
-{
-  PETE_EMPTY_CONSTRUCTORS(FnColor8MatrixProduct)
-  template<class T1, class T2>
-  inline typename BinaryReturn<T1, T2, FnColor8MatrixProduct >::Type_t
-  operator()(const T1 &a, const T2 &b) const
-  {
-    return (color8MatrixProduct(a,b));
-  }
-};
-
-struct FnColor6MatrixProduct
-{
-  PETE_EMPTY_CONSTRUCTORS(FnColor6MatrixProduct)
-  template<class T1, class T2>
-  inline typename BinaryReturn<T1, T2, FnColor6MatrixProduct >::Type_t
-  operator()(const T1 &a, const T2 &b) const
-  {
-    return (color6MatrixProduct(a,b));
   }
 };
 
@@ -1195,6 +1195,44 @@ chiralProjectMinus(const QDPType<T1,C1> & l)
     CreateLeaf<QDPType<T1,C1> >::make(l)));
 }
 
+//! Returns the gauge links in the 6-dimensional representation
+/*! Returns a LatticeColorMatrix6
+  @param l  matrix
+  @return \f$target^{l,m} ~ C^{l}_{a b}*source1_{a,c}*source2_{b,d}*C^{m}_{c,d}\f$
+  @ingroup group1
+  @relates QDPType */
+template<class T1,class C1>
+inline typename MakeReturn<UnaryNode<FnColor6GaugeLink,
+  typename CreateLeaf<QDPType<T1,C1> >::Leaf_t>,
+  typename UnaryReturn<C1,FnColor6GaugeLink >::Type_t >::Expression_t
+color6GaugeLink(const QDPType<T1,C1> & l)
+{
+  typedef UnaryNode<FnColor6GaugeLink,
+    typename CreateLeaf<QDPType<T1,C1> >::Leaf_t> Tree_t;
+  typedef typename UnaryReturn<C1,FnColor6GaugeLink >::Type_t Container_t;
+  return MakeReturn<Tree_t,Container_t>::make(Tree_t(
+    CreateLeaf<QDPType<T1,C1> >::make(l)));
+}
+
+//! Returns the gauge links in the 8-dimensional representation
+/*! Returns a LatticeColorMatrix8
+  @param l  matrix
+  @return \f$target^{i,j} ~ \lambda^{i}_{a,b}*source1_{a,c}*\lambda^{j}_{c,d}*adj(source2_{d,b})\f$
+  @ingroup group1
+  @relates QDPType */
+template<class T1,class C1>
+inline typename MakeReturn<UnaryNode<FnColor8GaugeLink,
+  typename CreateLeaf<QDPType<T1,C1> >::Leaf_t>,
+  typename UnaryReturn<C1,FnColor8GaugeLink >::Type_t >::Expression_t
+color8GaugeLink(const QDPType<T1,C1> & l)
+{
+  typedef UnaryNode<FnColor8GaugeLink,
+    typename CreateLeaf<QDPType<T1,C1> >::Leaf_t> Tree_t;
+  typedef typename UnaryReturn<C1,FnColor8GaugeLink >::Type_t Container_t;
+  return MakeReturn<Tree_t,Container_t>::make(Tree_t(
+    CreateLeaf<QDPType<T1,C1> >::make(l)));
+}
+
 //! Arc cos
 /*! @ingroup group1
 @relates QDPType */
@@ -1636,9 +1674,10 @@ colorCrossProduct(const QDPType<T1,C1> & l,const QDPType<T2,C2> & r)
     CreateLeaf<QDPType<T2,C2> >::make(r)));
 }
 
-//! Vector product of two Nc=3 color vectors to make diquark in 6-dim rep
+//! Vector product of two Nc=3 color vectors to make a diquark in 6-dim rep
 /*! 
-  combination of two Nc=3 color vectors with C matrices
+  Symmetric combination of two Nc=3 color vectors (the C matrices are a set of 6 symmetric
+  matrices that form a basis for all 3 x 3 symmetric matrices)
   @param l  vector
   @param r  vector
   @return \f$target^{l} = \sum_{a b}C^{l}_{a b}*source1^{a}*source2^{b}\f$
@@ -1662,10 +1701,11 @@ color6VectorProduct(const QDPType<T1,C1> & l,const QDPType<T2,C2> & r)
 
 //! Vector product of two Nc=3 color vectors to make diquark in 8-dim rep
 /*! 
-  combination of two Nc=3 color vectors with the Gell-Mann matrices
+  Product of two Nc=3 color vectors with the Gell-Mann matrices (with the factors of i removed
+  to make the Clebsch-Gordan coefficients real)
   @param l  vector
   @param r  vector
-  @return \f$target^{i} = \sum_{a,b} \lambda^{i}_{a,b} V1^{a} V2^{b}\f$
+  @return \f$target^{i} ~ 1/sqrt(2)*\sum_{a,b}\lambda^{i}_{a,b}*conj(source1^{a})*source2^{b}\f$
   @ingroup group1
   @relates QDPType */
 template<class T1,class C1,class T2,class C2>
@@ -1679,54 +1719,6 @@ color8VectorProduct(const QDPType<T1,C1> & l,const QDPType<T2,C2> & r)
     typename CreateLeaf<QDPType<T1,C1> >::Leaf_t,
     typename CreateLeaf<QDPType<T2,C2> >::Leaf_t> Tree_t;
   typedef typename BinaryReturn<C1,C2,FnColor8VectorProduct>::Type_t Container_t;
-  return MakeReturn<Tree_t,Container_t>::make(Tree_t(
-    CreateLeaf<QDPType<T1,C1> >::make(l),
-    CreateLeaf<QDPType<T2,C2> >::make(r)));
-}
-
-//! Matrix product of two Nc=3 color matrices to make gauge link in 8-dim rep
-/*! 
-  combination of two Nc=3 color matrices with the Gell-Mann matrices
-  @param l  vector
-  @param r  vector
-  @return \f$target^{i,j} = \lambda^{i}_{a,b} U_{a,c} \lambda^{j}_{c,d} U_{d,b}\f$
-  @ingroup group1
-  @relates QDPType */
-template<class T1,class C1,class T2,class C2>
-inline typename MakeReturn<BinaryNode<FnColor8MatrixProduct,
-  typename CreateLeaf<QDPType<T1,C1> >::Leaf_t,
-  typename CreateLeaf<QDPType<T2,C2> >::Leaf_t>,
-  typename BinaryReturn<C1,C2,FnColor8MatrixProduct>::Type_t >::Expression_t
-color8MatrixProduct(const QDPType<T1,C1> & l,const QDPType<T2,C2> & r)
-{
-  typedef BinaryNode<FnColor8MatrixProduct,
-    typename CreateLeaf<QDPType<T1,C1> >::Leaf_t,
-    typename CreateLeaf<QDPType<T2,C2> >::Leaf_t> Tree_t;
-  typedef typename BinaryReturn<C1,C2,FnColor8MatrixProduct>::Type_t Container_t;
-  return MakeReturn<Tree_t,Container_t>::make(Tree_t(
-    CreateLeaf<QDPType<T1,C1> >::make(l),
-    CreateLeaf<QDPType<T2,C2> >::make(r)));
-}
-
-//! Matrix product of two Nc=3 color matrices to make gauge link in 6-dim rep
-/*! 
-  combination of two Nc=3 color matrices with the C matrices
-  @param l  vector
-  @param r  vector
-  @return \f$target^{i,j} = C^{i}_{a,b} U_{a,c} C^{j}_{c,d} U_{b,d}\f$
-  @ingroup group1
-  @relates QDPType */
-template<class T1,class C1,class T2,class C2>
-inline typename MakeReturn<BinaryNode<FnColor6MatrixProduct,
-  typename CreateLeaf<QDPType<T1,C1> >::Leaf_t,
-  typename CreateLeaf<QDPType<T2,C2> >::Leaf_t>,
-  typename BinaryReturn<C1,C2,FnColor6MatrixProduct>::Type_t >::Expression_t
-color6MatrixProduct(const QDPType<T1,C1> & l,const QDPType<T2,C2> & r)
-{
-  typedef BinaryNode<FnColor6MatrixProduct,
-    typename CreateLeaf<QDPType<T1,C1> >::Leaf_t,
-    typename CreateLeaf<QDPType<T2,C2> >::Leaf_t> Tree_t;
-  typedef typename BinaryReturn<C1,C2,FnColor6MatrixProduct>::Type_t Container_t;
   return MakeReturn<Tree_t,Container_t>::make(Tree_t(
     CreateLeaf<QDPType<T1,C1> >::make(l),
     CreateLeaf<QDPType<T2,C2> >::make(r)));
@@ -2543,38 +2535,6 @@ color8VectorProduct(const QDPType<T1,C1> & l,const QDPExpr<T2,C2> & r)
 }
 
 template<class T1,class C1,class T2,class C2>
-inline typename MakeReturn<BinaryNode<FnColor8MatrixProduct,
-  typename CreateLeaf<QDPType<T1,C1> >::Leaf_t,
-  typename CreateLeaf<QDPExpr<T2,C2> >::Leaf_t>,
-  typename BinaryReturn<C1,C2,FnColor8MatrixProduct>::Type_t >::Expression_t
-color8MatrixProduct(const QDPType<T1,C1> & l,const QDPExpr<T2,C2> & r)
-{
-  typedef BinaryNode<FnColor8MatrixProduct,
-    typename CreateLeaf<QDPType<T1,C1> >::Leaf_t,
-    typename CreateLeaf<QDPExpr<T2,C2> >::Leaf_t> Tree_t;
-  typedef typename BinaryReturn<C1,C2,FnColor8MatrixProduct>::Type_t Container_t;
-  return MakeReturn<Tree_t,Container_t>::make(Tree_t(
-    CreateLeaf<QDPType<T1,C1> >::make(l),
-    CreateLeaf<QDPExpr<T2,C2> >::make(r)));
-}
-
-template<class T1,class C1,class T2,class C2>
-inline typename MakeReturn<BinaryNode<FnColor6MatrixProduct,
-  typename CreateLeaf<QDPType<T1,C1> >::Leaf_t,
-  typename CreateLeaf<QDPExpr<T2,C2> >::Leaf_t>,
-  typename BinaryReturn<C1,C2,FnColor6MatrixProduct>::Type_t >::Expression_t
-color6MatrixProduct(const QDPType<T1,C1> & l,const QDPExpr<T2,C2> & r)
-{
-  typedef BinaryNode<FnColor6MatrixProduct,
-    typename CreateLeaf<QDPType<T1,C1> >::Leaf_t,
-    typename CreateLeaf<QDPExpr<T2,C2> >::Leaf_t> Tree_t;
-  typedef typename BinaryReturn<C1,C2,FnColor6MatrixProduct>::Type_t Container_t;
-  return MakeReturn<Tree_t,Container_t>::make(Tree_t(
-    CreateLeaf<QDPType<T1,C1> >::make(l),
-    CreateLeaf<QDPExpr<T2,C2> >::make(r)));
-}
-
-template<class T1,class C1,class T2,class C2>
 inline typename MakeReturn<BinaryNode<FnLocalInnerProduct,
   typename CreateLeaf<QDPType<T1,C1> >::Leaf_t,
   typename CreateLeaf<QDPExpr<T2,C2> >::Leaf_t>,
@@ -3145,38 +3105,6 @@ color8VectorProduct(const QDPExpr<T1,C1> & l,const QDPType<T2,C2> & r)
     typename CreateLeaf<QDPExpr<T1,C1> >::Leaf_t,
     typename CreateLeaf<QDPType<T2,C2> >::Leaf_t> Tree_t;
   typedef typename BinaryReturn<C1,C2,FnColor8VectorProduct>::Type_t Container_t;
-  return MakeReturn<Tree_t,Container_t>::make(Tree_t(
-    CreateLeaf<QDPExpr<T1,C1> >::make(l),
-    CreateLeaf<QDPType<T2,C2> >::make(r)));
-}
-
-template<class T1,class C1,class T2,class C2>
-inline typename MakeReturn<BinaryNode<FnColor8MatrixProduct,
-  typename CreateLeaf<QDPExpr<T1,C1> >::Leaf_t,
-  typename CreateLeaf<QDPType<T2,C2> >::Leaf_t>,
-  typename BinaryReturn<C1,C2,FnColor8MatrixProduct>::Type_t >::Expression_t
-color8MatrixProduct(const QDPExpr<T1,C1> & l,const QDPType<T2,C2> & r)
-{
-  typedef BinaryNode<FnColor8MatrixProduct,
-    typename CreateLeaf<QDPExpr<T1,C1> >::Leaf_t,
-    typename CreateLeaf<QDPType<T2,C2> >::Leaf_t> Tree_t;
-  typedef typename BinaryReturn<C1,C2,FnColor8MatrixProduct>::Type_t Container_t;
-  return MakeReturn<Tree_t,Container_t>::make(Tree_t(
-    CreateLeaf<QDPExpr<T1,C1> >::make(l),
-    CreateLeaf<QDPType<T2,C2> >::make(r)));
-}
-
-template<class T1,class C1,class T2,class C2>
-inline typename MakeReturn<BinaryNode<FnColor6MatrixProduct,
-  typename CreateLeaf<QDPExpr<T1,C1> >::Leaf_t,
-  typename CreateLeaf<QDPType<T2,C2> >::Leaf_t>,
-  typename BinaryReturn<C1,C2,FnColor6MatrixProduct>::Type_t >::Expression_t
-color6MatrixProduct(const QDPExpr<T1,C1> & l,const QDPType<T2,C2> & r)
-{
-  typedef BinaryNode<FnColor6MatrixProduct,
-    typename CreateLeaf<QDPExpr<T1,C1> >::Leaf_t,
-    typename CreateLeaf<QDPType<T2,C2> >::Leaf_t> Tree_t;
-  typedef typename BinaryReturn<C1,C2,FnColor6MatrixProduct>::Type_t Container_t;
   return MakeReturn<Tree_t,Container_t>::make(Tree_t(
     CreateLeaf<QDPExpr<T1,C1> >::make(l),
     CreateLeaf<QDPType<T2,C2> >::make(r)));
@@ -3759,38 +3687,6 @@ color8VectorProduct(const QDPType<T1,C1> & l,const typename WordType<C1>::Type_t
 }
 
 template<class T1,class C1>
-inline typename MakeReturn<BinaryNode<FnColor8MatrixProduct,
-  typename CreateLeaf<QDPType<T1,C1> >::Leaf_t,
-  typename CreateLeaf<typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t >::Leaf_t>,
-  typename BinaryReturn<C1,typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t,FnColor8MatrixProduct>::Type_t >::Expression_t
-color8MatrixProduct(const QDPType<T1,C1> & l,const typename WordType<C1>::Type_t & r)
-{
-  typedef BinaryNode<FnColor8MatrixProduct,
-    typename CreateLeaf<QDPType<T1,C1> >::Leaf_t,
-    typename CreateLeaf<typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t >::Leaf_t> Tree_t;
-  typedef typename BinaryReturn<C1,typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t,FnColor8MatrixProduct>::Type_t Container_t;
-  return MakeReturn<Tree_t,Container_t>::make(Tree_t(
-    CreateLeaf<QDPType<T1,C1> >::make(l),
-    CreateLeaf<typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t >::make(typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t(r))));
-}
-
-template<class T1,class C1>
-inline typename MakeReturn<BinaryNode<FnColor6MatrixProduct,
-  typename CreateLeaf<QDPType<T1,C1> >::Leaf_t,
-  typename CreateLeaf<typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t >::Leaf_t>,
-  typename BinaryReturn<C1,typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t,FnColor6MatrixProduct>::Type_t >::Expression_t
-color6MatrixProduct(const QDPType<T1,C1> & l,const typename WordType<C1>::Type_t & r)
-{
-  typedef BinaryNode<FnColor6MatrixProduct,
-    typename CreateLeaf<QDPType<T1,C1> >::Leaf_t,
-    typename CreateLeaf<typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t >::Leaf_t> Tree_t;
-  typedef typename BinaryReturn<C1,typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t,FnColor6MatrixProduct>::Type_t Container_t;
-  return MakeReturn<Tree_t,Container_t>::make(Tree_t(
-    CreateLeaf<QDPType<T1,C1> >::make(l),
-    CreateLeaf<typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t >::make(typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t(r))));
-}
-
-template<class T1,class C1>
 inline typename MakeReturn<BinaryNode<FnLocalInnerProduct,
   typename CreateLeaf<QDPType<T1,C1> >::Leaf_t,
   typename CreateLeaf<typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t >::Leaf_t>,
@@ -4361,38 +4257,6 @@ color8VectorProduct(const typename WordType<C2>::Type_t & l,const QDPType<T2,C2>
     typename CreateLeaf<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t >::Leaf_t,
     typename CreateLeaf<QDPType<T2,C2> >::Leaf_t> Tree_t;
   typedef typename BinaryReturn<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t,C2,FnColor8VectorProduct>::Type_t Container_t;
-  return MakeReturn<Tree_t,Container_t>::make(Tree_t(
-    CreateLeaf<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t >::make(typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t(l)),
-    CreateLeaf<QDPType<T2,C2> >::make(r)));
-}
-
-template<class T2,class C2>
-inline typename MakeReturn<BinaryNode<FnColor8MatrixProduct,
-  typename CreateLeaf<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t >::Leaf_t,
-  typename CreateLeaf<QDPType<T2,C2> >::Leaf_t>,
-  typename BinaryReturn<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t,C2,FnColor8MatrixProduct>::Type_t >::Expression_t
-color8MatrixProduct(const typename WordType<C2>::Type_t & l,const QDPType<T2,C2> & r)
-{
-  typedef BinaryNode<FnColor8MatrixProduct,
-    typename CreateLeaf<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t >::Leaf_t,
-    typename CreateLeaf<QDPType<T2,C2> >::Leaf_t> Tree_t;
-  typedef typename BinaryReturn<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t,C2,FnColor8MatrixProduct>::Type_t Container_t;
-  return MakeReturn<Tree_t,Container_t>::make(Tree_t(
-    CreateLeaf<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t >::make(typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t(l)),
-    CreateLeaf<QDPType<T2,C2> >::make(r)));
-}
-
-template<class T2,class C2>
-inline typename MakeReturn<BinaryNode<FnColor6MatrixProduct,
-  typename CreateLeaf<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t >::Leaf_t,
-  typename CreateLeaf<QDPType<T2,C2> >::Leaf_t>,
-  typename BinaryReturn<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t,C2,FnColor6MatrixProduct>::Type_t >::Expression_t
-color6MatrixProduct(const typename WordType<C2>::Type_t & l,const QDPType<T2,C2> & r)
-{
-  typedef BinaryNode<FnColor6MatrixProduct,
-    typename CreateLeaf<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t >::Leaf_t,
-    typename CreateLeaf<QDPType<T2,C2> >::Leaf_t> Tree_t;
-  typedef typename BinaryReturn<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t,C2,FnColor6MatrixProduct>::Type_t Container_t;
   return MakeReturn<Tree_t,Container_t>::make(Tree_t(
     CreateLeaf<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t >::make(typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t(l)),
     CreateLeaf<QDPType<T2,C2> >::make(r)));
@@ -5576,6 +5440,32 @@ chiralProjectMinus(const QDPExpr<T1,C1> & l)
 }
 
 template<class T1,class C1>
+inline typename MakeReturn<UnaryNode<FnColor6GaugeLink,
+  typename CreateLeaf<QDPExpr<T1,C1> >::Leaf_t>,
+  typename UnaryReturn<C1,FnColor6GaugeLink >::Type_t >::Expression_t
+color6GaugeLink(const QDPExpr<T1,C1> & l)
+{
+  typedef UnaryNode<FnColor6GaugeLink,
+    typename CreateLeaf<QDPExpr<T1,C1> >::Leaf_t> Tree_t;
+  typedef typename UnaryReturn<C1,FnColor6GaugeLink >::Type_t Container_t;
+  return MakeReturn<Tree_t,Container_t>::make(Tree_t(
+    CreateLeaf<QDPExpr<T1,C1> >::make(l)));
+}
+
+template<class T1,class C1>
+inline typename MakeReturn<UnaryNode<FnColor8GaugeLink,
+  typename CreateLeaf<QDPExpr<T1,C1> >::Leaf_t>,
+  typename UnaryReturn<C1,FnColor8GaugeLink >::Type_t >::Expression_t
+color8GaugeLink(const QDPExpr<T1,C1> & l)
+{
+  typedef UnaryNode<FnColor8GaugeLink,
+    typename CreateLeaf<QDPExpr<T1,C1> >::Leaf_t> Tree_t;
+  typedef typename UnaryReturn<C1,FnColor8GaugeLink >::Type_t Container_t;
+  return MakeReturn<Tree_t,Container_t>::make(Tree_t(
+    CreateLeaf<QDPExpr<T1,C1> >::make(l)));
+}
+
+template<class T1,class C1>
 inline typename MakeReturn<UnaryNode<FnArcCos,
   typename CreateLeaf<QDPExpr<T1,C1> >::Leaf_t>,
   typename UnaryReturn<C1,FnArcCos >::Type_t >::Expression_t
@@ -5939,38 +5829,6 @@ color8VectorProduct(const QDPExpr<T1,C1> & l,const QDPExpr<T2,C2> & r)
     typename CreateLeaf<QDPExpr<T1,C1> >::Leaf_t,
     typename CreateLeaf<QDPExpr<T2,C2> >::Leaf_t> Tree_t;
   typedef typename BinaryReturn<C1,C2,FnColor8VectorProduct>::Type_t Container_t;
-  return MakeReturn<Tree_t,Container_t>::make(Tree_t(
-    CreateLeaf<QDPExpr<T1,C1> >::make(l),
-    CreateLeaf<QDPExpr<T2,C2> >::make(r)));
-}
-
-template<class T1,class C1,class T2,class C2>
-inline typename MakeReturn<BinaryNode<FnColor8MatrixProduct,
-  typename CreateLeaf<QDPExpr<T1,C1> >::Leaf_t,
-  typename CreateLeaf<QDPExpr<T2,C2> >::Leaf_t>,
-  typename BinaryReturn<C1,C2,FnColor8MatrixProduct>::Type_t >::Expression_t
-color8MatrixProduct(const QDPExpr<T1,C1> & l,const QDPExpr<T2,C2> & r)
-{
-  typedef BinaryNode<FnColor8MatrixProduct,
-    typename CreateLeaf<QDPExpr<T1,C1> >::Leaf_t,
-    typename CreateLeaf<QDPExpr<T2,C2> >::Leaf_t> Tree_t;
-  typedef typename BinaryReturn<C1,C2,FnColor8MatrixProduct>::Type_t Container_t;
-  return MakeReturn<Tree_t,Container_t>::make(Tree_t(
-    CreateLeaf<QDPExpr<T1,C1> >::make(l),
-    CreateLeaf<QDPExpr<T2,C2> >::make(r)));
-}
-
-template<class T1,class C1,class T2,class C2>
-inline typename MakeReturn<BinaryNode<FnColor6MatrixProduct,
-  typename CreateLeaf<QDPExpr<T1,C1> >::Leaf_t,
-  typename CreateLeaf<QDPExpr<T2,C2> >::Leaf_t>,
-  typename BinaryReturn<C1,C2,FnColor6MatrixProduct>::Type_t >::Expression_t
-color6MatrixProduct(const QDPExpr<T1,C1> & l,const QDPExpr<T2,C2> & r)
-{
-  typedef BinaryNode<FnColor6MatrixProduct,
-    typename CreateLeaf<QDPExpr<T1,C1> >::Leaf_t,
-    typename CreateLeaf<QDPExpr<T2,C2> >::Leaf_t> Tree_t;
-  typedef typename BinaryReturn<C1,C2,FnColor6MatrixProduct>::Type_t Container_t;
   return MakeReturn<Tree_t,Container_t>::make(Tree_t(
     CreateLeaf<QDPExpr<T1,C1> >::make(l),
     CreateLeaf<QDPExpr<T2,C2> >::make(r)));
@@ -6591,38 +6449,6 @@ color8VectorProduct(const QDPExpr<T1,C1> & l,const typename WordType<C1>::Type_t
 }
 
 template<class T1,class C1>
-inline typename MakeReturn<BinaryNode<FnColor8MatrixProduct,
-  typename CreateLeaf<QDPExpr<T1,C1> >::Leaf_t,
-  typename CreateLeaf<typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t >::Leaf_t>,
-  typename BinaryReturn<C1,typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t,FnColor8MatrixProduct>::Type_t >::Expression_t
-color8MatrixProduct(const QDPExpr<T1,C1> & l,const typename WordType<C1>::Type_t & r)
-{
-  typedef BinaryNode<FnColor8MatrixProduct,
-    typename CreateLeaf<QDPExpr<T1,C1> >::Leaf_t,
-    typename CreateLeaf<typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t >::Leaf_t> Tree_t;
-  typedef typename BinaryReturn<C1,typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t,FnColor8MatrixProduct>::Type_t Container_t;
-  return MakeReturn<Tree_t,Container_t>::make(Tree_t(
-    CreateLeaf<QDPExpr<T1,C1> >::make(l),
-    CreateLeaf<typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t >::make(typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t(r))));
-}
-
-template<class T1,class C1>
-inline typename MakeReturn<BinaryNode<FnColor6MatrixProduct,
-  typename CreateLeaf<QDPExpr<T1,C1> >::Leaf_t,
-  typename CreateLeaf<typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t >::Leaf_t>,
-  typename BinaryReturn<C1,typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t,FnColor6MatrixProduct>::Type_t >::Expression_t
-color6MatrixProduct(const QDPExpr<T1,C1> & l,const typename WordType<C1>::Type_t & r)
-{
-  typedef BinaryNode<FnColor6MatrixProduct,
-    typename CreateLeaf<QDPExpr<T1,C1> >::Leaf_t,
-    typename CreateLeaf<typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t >::Leaf_t> Tree_t;
-  typedef typename BinaryReturn<C1,typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t,FnColor6MatrixProduct>::Type_t Container_t;
-  return MakeReturn<Tree_t,Container_t>::make(Tree_t(
-    CreateLeaf<QDPExpr<T1,C1> >::make(l),
-    CreateLeaf<typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t >::make(typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t(r))));
-}
-
-template<class T1,class C1>
 inline typename MakeReturn<BinaryNode<FnLocalInnerProduct,
   typename CreateLeaf<QDPExpr<T1,C1> >::Leaf_t,
   typename CreateLeaf<typename SimpleScalar<typename WordType<C1>::Type_t>::Type_t >::Leaf_t>,
@@ -7193,38 +7019,6 @@ color8VectorProduct(const typename WordType<C2>::Type_t & l,const QDPExpr<T2,C2>
     typename CreateLeaf<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t >::Leaf_t,
     typename CreateLeaf<QDPExpr<T2,C2> >::Leaf_t> Tree_t;
   typedef typename BinaryReturn<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t,C2,FnColor8VectorProduct>::Type_t Container_t;
-  return MakeReturn<Tree_t,Container_t>::make(Tree_t(
-    CreateLeaf<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t >::make(typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t(l)),
-    CreateLeaf<QDPExpr<T2,C2> >::make(r)));
-}
-
-template<class T2,class C2>
-inline typename MakeReturn<BinaryNode<FnColor8MatrixProduct,
-  typename CreateLeaf<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t >::Leaf_t,
-  typename CreateLeaf<QDPExpr<T2,C2> >::Leaf_t>,
-  typename BinaryReturn<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t,C2,FnColor8MatrixProduct>::Type_t >::Expression_t
-color8MatrixProduct(const typename WordType<C2>::Type_t & l,const QDPExpr<T2,C2> & r)
-{
-  typedef BinaryNode<FnColor8MatrixProduct,
-    typename CreateLeaf<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t >::Leaf_t,
-    typename CreateLeaf<QDPExpr<T2,C2> >::Leaf_t> Tree_t;
-  typedef typename BinaryReturn<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t,C2,FnColor8MatrixProduct>::Type_t Container_t;
-  return MakeReturn<Tree_t,Container_t>::make(Tree_t(
-    CreateLeaf<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t >::make(typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t(l)),
-    CreateLeaf<QDPExpr<T2,C2> >::make(r)));
-}
-
-template<class T2,class C2>
-inline typename MakeReturn<BinaryNode<FnColor6MatrixProduct,
-  typename CreateLeaf<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t >::Leaf_t,
-  typename CreateLeaf<QDPExpr<T2,C2> >::Leaf_t>,
-  typename BinaryReturn<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t,C2,FnColor6MatrixProduct>::Type_t >::Expression_t
-color6MatrixProduct(const typename WordType<C2>::Type_t & l,const QDPExpr<T2,C2> & r)
-{
-  typedef BinaryNode<FnColor6MatrixProduct,
-    typename CreateLeaf<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t >::Leaf_t,
-    typename CreateLeaf<QDPExpr<T2,C2> >::Leaf_t> Tree_t;
-  typedef typename BinaryReturn<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t,C2,FnColor6MatrixProduct>::Type_t Container_t;
   return MakeReturn<Tree_t,Container_t>::make(Tree_t(
     CreateLeaf<typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t >::make(typename SimpleScalar<typename WordType<C2>::Type_t>::Type_t(l)),
     CreateLeaf<QDPExpr<T2,C2> >::make(r)));

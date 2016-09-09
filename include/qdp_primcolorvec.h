@@ -321,7 +321,7 @@ struct BinaryReturn<PColorVector<T1,3>, PColorVector<T2,3>, FnColor6VectorProduc
 //! dest  = color6VectorProduct(Qvec1,Qvec2)
 /*!
  * Performs:
- *  \f$dest^{l} = \sum_{a,b} C^{l}_{a,b} V1^{a} V2^{b}\f$
+ *  \f$dest^{l} = \sum_{a,b}C^{l}_{a,b}V1^{a}*V2^{b}\f$
  *
  * This routine is completely unrolled for 3 colors
  */
@@ -331,16 +331,16 @@ color6VectorProduct(const PColorVector<T1,3>& s1, const PColorVector<T2,3>& s2)
 {
   typename BinaryReturn<PColorVector<T1,3>, PColorVector<T2,3>, FnColor6VectorProduct>::Type_t  d;
 
-  T1 coef(1./QDP::sqrt(2.),0.);
+  T1 g1(sqrt(.5),0.);
 
   d.elem(0) = s1.elem(0)*s2.elem(0);
   d.elem(1) = s1.elem(1)*s2.elem(1);
   d.elem(2) = s1.elem(2)*s2.elem(2);
-  d.elem(3) = coef*(s1.elem(0)*s2.elem(1) + s1.elem(1)*s2.elem(0));
-  d.elem(4) = coef*(s1.elem(0)*s2.elem(2) + s1.elem(2)*s2.elem(0));
-  d.elem(5) = coef*(s1.elem(1)*s2.elem(2) + s1.elem(2)*s2.elem(1));
+  d.elem(3) = g1*(s1.elem(0)*s2.elem(1) + s1.elem(1)*s2.elem(0));
+  d.elem(4) = g1*(s1.elem(1)*s2.elem(2) + s1.elem(2)*s2.elem(1));
+  d.elem(5) = g1*(s1.elem(2)*s2.elem(0) + s1.elem(0)*s2.elem(2));
 
- return d;
+  return d;
 }
 
 //-----------------------------------------------------------------------------
@@ -354,7 +354,7 @@ struct BinaryReturn<PColorVector<T1,3>, PColorVector<T2,3>, FnColor8VectorProduc
 //! dest  = color8VectorProduct(Qvec1,Qvec2)
 /*!
  * Performs:
- *  \f$dest^{i} = \sum_{a,b} \lambda^{i}_{a,b} V1^{a} V2^{b}\f$
+ *  \f$dest^{i} ~ 1/sqrt(2)*\sum_{a,b}\lambda^{i}_{a,b}*conj(V1^{a})*V2^{b}\f$
  *
  * This routine is completely unrolled for 3 colors
  */
@@ -364,20 +364,22 @@ color8VectorProduct(const PColorVector<T1,3>& s1, const PColorVector<T2,3>& s2)
 {
   typename BinaryReturn<PColorVector<T1,3>, PColorVector<T2,3>, FnColor8VectorProduct>::Type_t  d;
 
-  T1 nI(0.,-1.);
-  T1 sqrt3(1./QDP::sqrt(3.),0.);
-  T1 coef2(2.,0.);
+  T1 g1(sqrt(.5),0.);
+  T1 g2(sqrt(1./6.),0.);
+  T1 g3(2.,0.);
 
-  d.elem(0) = s1.elem(0)*s2.elem(1) + s1.elem(1)*s2.elem(0);
-  d.elem(1) = nI*(s1.elem(0)*s2.elem(1) - s1.elem(1)*s2.elem(0));
-  d.elem(2) = s1.elem(0)*s2.elem(0) - s1.elem(1)*s2.elem(1);
-  d.elem(3) = s1.elem(0)*s2.elem(2) + s1.elem(2)*s2.elem(0);
-  d.elem(4) = nI*(s1.elem(0)*s2.elem(2) - s1.elem(2)*s2.elem(0));
-  d.elem(5) = s1.elem(1)*s2.elem(2) + s1.elem(2)*s2.elem(1);
-  d.elem(6) = nI*(s1.elem(1)*s2.elem(2) - s1.elem(2)*s2.elem(1));
-  d.elem(7) = sqrt3*(s1.elem(0)*s2.elem(0) + s1.elem(1)*s2.elem(1) - coef2*s1.elem(2)*s2.elem(2));
+  T1 s1c0(conj(s1.elem(0))), s1c1(conj(s1.elem(1))), s1c2(conj(s1.elem(2)));
 
- return d;
+  d.elem(0) = g1*(s1c0*s2.elem(1) + s1c1*s2.elem(0));
+  d.elem(1) = g1*(s1c1*s2.elem(0) - s1c0*s2.elem(1));
+  d.elem(2) = g1*(s1c0*s2.elem(0) - s1c1*s2.elem(1));
+  d.elem(3) = g1*(s1c0*s2.elem(2) + s1c2*s2.elem(0));
+  d.elem(4) = g1*(s1c2*s2.elem(0) - s1c0*s2.elem(2));
+  d.elem(5) = g1*(s1c1*s2.elem(2) + s1c2*s2.elem(1));
+  d.elem(6) = g1*(s1c2*s2.elem(1) - s1c1*s2.elem(2));
+  d.elem(7) = g2*(g3*s1c2*s2.elem(2) - s1c1*s2.elem(1) - s1c0*s2.elem(0));
+
+  return d;
 }
 
 } // namespace QDP

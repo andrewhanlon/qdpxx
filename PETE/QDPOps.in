@@ -304,6 +304,26 @@ unaryOps
   @return 0.5*(1 - gamma[5])*l
   @ingroup group1
   @relates QDPType */"
+-----
+  TAG = "FnColor6GaugeLink"
+  FUNCTION = "color6GaugeLink"
+  EXPR = "return (color6GaugeLink(a));"
+  COMMENTA = "//! Returns the gauge links in the 6-dimensional representation"
+  COMMENTB = "/*! Returns a LatticeColorMatrix6
+  @param l  matrix
+  @return \f$target^{l,m} ~ C^{l}_{a b}*source1_{a,c}*source2_{b,d}*C^{m}_{c,d}\f$
+  @ingroup group1
+  @relates QDPType */"
+-----
+  TAG = "FnColor8GaugeLink"
+  FUNCTION = "color8GaugeLink"
+  EXPR = "return (color8GaugeLink(a));"
+  COMMENTA = "//! Returns the gauge links in the 8-dimensional representation"
+  COMMENTB = "/*! Returns a LatticeColorMatrix8
+  @param l  matrix
+  @return \f$target^{i,j} ~ \lambda^{i}_{a,b}*source1_{a,c}*\lambda^{j}_{c,d}*adj(source2_{d,b})\f$
+  @ingroup group1
+  @relates QDPType */"
 
 binaryOps
 -----
@@ -357,9 +377,10 @@ binaryOps
   TAG = "FnColor6VectorProduct"
   FUNCTION = "color6VectorProduct"
   EXPR = "return (color6VectorProduct(a,b));"
-  COMMENTA = "//! Vector product of two Nc=3 color vectors to make diquark in 6-dim rep"
+  COMMENTA = "//! Vector product of two Nc=3 color vectors to make a diquark in 6-dim rep"
   COMMENTB = "/*! 
-  product of two Nc=3 color vectors with C matrices
+  Symmetric combination of two Nc=3 color vectors (the C matrices are a set of 6 symmetric
+  matrices that form a basis for all 3 x 3 symmetric matrices)
   @param l  vector
   @param r  vector
   @return \f$target^{l} = \sum_{a b}C^{l}_{a b}*source1^{a}*source2^{b}\f$
@@ -371,34 +392,11 @@ binaryOps
   EXPR = "return (color8VectorProduct(a,b));"
   COMMENTA = "//! Vector product of two Nc=3 color vectors to make diquark in 8-dim rep"
   COMMENTB = "/*! 
-  product of two Nc=3 color vectors with the Gell-Mann matrices
+  Product of two Nc=3 color vectors with the Gell-Mann matrices (with the factors of i removed
+  to make the Clebsch-Gordan coefficients real)
   @param l  vector
   @param r  vector
-  @return \f$target^{i} = \sum_{a,b} \lambda^{i}_{a,b} source1^{a} source2^{b}\f$
-  @ingroup group1
-  @relates QDPType */"
------
-  TAG = "FnColor6MatrixProduct"
-  FUNCTION = "color6MatrixProduct"
-  EXPR = "return (color6MatrixProduct(a,b));"
-  COMMENTA = "//! Matrix product of two Nc=3 color Matrices to make gauge-link in 6-dim rep"
-  COMMENTB = "/*! 
-  product of two Nc=3 color matrices with C matrices
-  @param l  vector
-  @param r  vector
-  @return \f$target^{l,m} = C^{l}_{a b}*source1_{a,c}*source2_{b,d}*C^{m}_{c,d}\f$
-  @ingroup group1
-  @relates QDPType */"
------
-  TAG = "FnColor8MatrixProduct"
-  FUNCTION = "color8MatrixProduct"
-  EXPR = "return (color8MatrixProduct(a,b));"
-  COMMENTA = "//! Matrix product of two Nc=3 color Matrices to make gauge-link in 8-dim rep"
-  COMMENTB = "/*! 
-  product of two Nc=3 color matrices with the Gell-Mann matrices
-  @param l  vector
-  @param r  vector
-  @return \f$target^{i,j} = \lambda^{i}_{a,b}*source1_{a,c}*\lambda^{j}_{c,d}*adj(source2_{d,b})\f$
+  @return \f$target^{i} ~ 1/sqrt(2)*\sum_{a,b}\lambda^{i}_{a,b}*conj(source1^{a})*source2^{b}\f$
   @ingroup group1
   @relates QDPType */"
 -----

@@ -763,55 +763,169 @@ quarkContractXX(const PColorMatrix<T1,4>& s1, const PColorMatrix<T2,4>& s2)
 }
 
 //-----------------------------------------------------------------------------
-//  color6 matrix product   s1 X s2
-template<class T1, class T2>
-struct BinaryReturn<PColorMatrix<T1,3>, PColorMatrix<T2,3>, FnColor6MatrixProduct> {
-  typedef PColorMatrix<typename BinaryReturn<T1, T2, FnColor6MatrixProduct>::Type_t, 6>  Type_t;
+//  color6 gauge-links
+template<class T>
+struct UnaryReturn<PColorMatrix<T,3>, FnColor6GaugeLink> {
+  typedef PColorMatrix<typename UnaryReturn<T, FnColor6GaugeLink>::Type_t, 6>  Type_t;
 };
 
-//! dest  = color6MatrixProduct(Qmat1,Qmat2)
+//! dest  = color6GaugeLink(Qmat)
 /*!
  * Performs:
- *  \f$dest^{l,m} = C^{l}_{a b}*source1_{a,c}*source2_{b,d}*C^{m}_{c,d}\f$
+ *  \f$dest^{l,m} ~ C^{l}_{a b}*source_{a,c}*source_{b,d}*C^{m}_{c,d}\f$
  *
  * This routine is completely unrolled for 3 colors
  */
-template<class T1, class T2>
-inline typename BinaryReturn<PColorMatrix<T1,3>, PColorMatrix<T2,3>, FnColor6MatrixProduct>::Type_t
-color6MatrixProduct(const PColorMatrix<T1,3>& s1, const PColorMatrix<T2,3>& s2)
+template<class T>
+inline typename UnaryReturn<PColorMatrix<T,3>, FnColor6GaugeLink>::Type_t
+color6GaugeLink(const PColorMatrix<T,3>& s)
 {
-  typename BinaryReturn<PColorMatrix<T1,3>, PColorMatrix<T2,3>, FnColor6MatrixProduct>::Type_t  d;
+  typename UnaryReturn<PColorMatrix<T,3>, FnColor6GaugeLink>::Type_t  d;
 
-  T1 coef(1./QDP::sqrt(2.),0.);
+  T g1(sqrt(2.),0.);
 
-  d.elem(0,0) = s1.elem(0,1)*s2.elem(1,0);
-
- return d;
+  d.elem(0,0)= s.elem(0,0)*s.elem(0,0);                 
+  d.elem(0,1)= s.elem(0,1)*s.elem(0,1);                 
+  d.elem(0,2)= s.elem(0,2)*s.elem(0,2);                 
+  d.elem(0,3)= s.elem(0,0)*s.elem(0,1)*g1;              
+  d.elem(0,4)= s.elem(0,1)*s.elem(0,2)*g1;              
+  d.elem(0,5)= s.elem(0,0)*s.elem(0,2)*g1;              
+  d.elem(1,0)= s.elem(1,0)*s.elem(1,0);                 
+  d.elem(1,1)= s.elem(1,1)*s.elem(1,1);                 
+  d.elem(1,2)= s.elem(1,2)*s.elem(1,2);                 
+  d.elem(1,3)= s.elem(1,0)*s.elem(1,1)*g1;              
+  d.elem(1,4)= s.elem(1,1)*s.elem(1,2)*g1;              
+  d.elem(1,5)= s.elem(1,0)*s.elem(1,2)*g1;              
+  d.elem(2,0)= s.elem(2,0)*s.elem(2,0);                 
+  d.elem(2,1)= s.elem(2,1)*s.elem(2,1);                 
+  d.elem(2,2)= s.elem(2,2)*s.elem(2,2);                 
+  d.elem(2,3)= s.elem(2,0)*s.elem(2,1)*g1;              
+  d.elem(2,4)= s.elem(2,1)*s.elem(2,2)*g1;              
+  d.elem(2,5)= s.elem(2,0)*s.elem(2,2)*g1;              
+  d.elem(3,0)= s.elem(0,0)*s.elem(1,0)*g1;              
+  d.elem(3,1)= s.elem(0,1)*s.elem(1,1)*g1;              
+  d.elem(3,2)= s.elem(0,2)*s.elem(1,2)*g1;              
+  d.elem(3,3)= s.elem(0,0)*s.elem(1,1)+s.elem(0,1)*s.elem(1,0);   
+  d.elem(3,4)= s.elem(0,1)*s.elem(1,2)+s.elem(0,2)*s.elem(1,1);   
+  d.elem(3,5)= s.elem(0,0)*s.elem(1,2)+s.elem(0,2)*s.elem(1,0);   
+  d.elem(4,0)= s.elem(1,0)*s.elem(2,0)*g1;              
+  d.elem(4,1)= s.elem(1,1)*s.elem(2,1)*g1;              
+  d.elem(4,2)= s.elem(1,2)*s.elem(2,2)*g1;              
+  d.elem(4,3)= s.elem(1,0)*s.elem(2,1)+s.elem(1,1)*s.elem(2,0);   
+  d.elem(4,4)= s.elem(1,1)*s.elem(2,2)+s.elem(1,2)*s.elem(2,1);   
+  d.elem(4,5)= s.elem(1,0)*s.elem(2,2)+s.elem(1,2)*s.elem(2,0);   
+  d.elem(5,0)= s.elem(0,0)*s.elem(2,0)*g1;              
+  d.elem(5,1)= s.elem(0,1)*s.elem(2,1)*g1;              
+  d.elem(5,2)= s.elem(0,2)*s.elem(2,2)*g1;              
+  d.elem(5,3)= s.elem(0,0)*s.elem(2,1)+s.elem(0,1)*s.elem(2,0);   
+  d.elem(5,4)= s.elem(0,1)*s.elem(2,2)+s.elem(0,2)*s.elem(2,1);   
+  d.elem(5,5)= s.elem(0,0)*s.elem(2,2)+s.elem(0,2)*s.elem(2,0);
+  
+  return d;
 }
 
 //-----------------------------------------------------------------------------
-// color8 matrix product   s1 X s2
-template<class T1, class T2>
-struct BinaryReturn<PColorMatrix<T1,3>, PColorMatrix<T2,3>, FnColor8MatrixProduct> {
-  typedef PColorMatrix<typename BinaryReturn<T1, T2, FnColor8MatrixProduct>::Type_t, 8>  Type_t;
+// color8 gauge-links
+template<class T>
+struct UnaryReturn<PColorMatrix<T,3>, FnColor8GaugeLink> {
+  typedef PColorMatrix<typename UnaryReturn<T, FnColor8GaugeLink>::Type_t, 8>  Type_t;
 };
 
-//! dest  = color8MatrixProduct(Qvec1,Qvec2)
+//! dest  = color8GaugeLink(Qmat)
 /*!
  * Performs:
- *  \f$dest^{i,j} = \lambda^{i}_{a,b}*source1_{a,c}*\lambda^{j}_{c,d}*adj(source2_{d,b})\f$ 
+ *  \f$dest^{i,j} ~ \lambda^{i}_{a,b}*source_{a,c}*\lambda^{j}_{c,d}*adj(source_{d,b})\f$ 
  *
  * This routine is completely unrolled for 3 colors
  */
-template<class T1, class T2>
-inline typename BinaryReturn<PColorMatrix<T1,3>, PColorMatrix<T2,3>, FnColor8MatrixProduct>::Type_t
-color8VectorProduct(const PColorMatrix<T1,3>& s1, const PColorMatrix<T2,3>& s2)
+template<class T>
+inline typename UnaryReturn<PColorMatrix<T,3>, FnColor8GaugeLink>::Type_t
+color8GaugeLink(const PColorMatrix<T,3>& s)
 {
-  typename BinaryReturn<PColorMatrix<T1,3>, PColorMatrix<T2,3>, FnColor8MatrixProduct>::Type_t  d;
+  typename UnaryReturn<PColorMatrix<T,3>, FnColor8GaugeLink>::Type_t  d;
 
-  d.elem(0,0) = s1.elem(0,1)*s2.elem(1,0);
+  T g1(.5,0.);
+  T g2(1./sqrt(12.),0.);
+  T g3(3./sqrt(12.),0.);
 
- return d;
+  T sc00(conj(s.elem(0,0))), sc01(conj(s.elem(0,1))), sc02(conj(s.elem(0,2))),
+    sc10(conj(s.elem(1,0))), sc11(conj(s.elem(1,1))), sc12(conj(s.elem(1,2))),
+    sc20(conj(s.elem(2,0))), sc21(conj(s.elem(2,1))), sc22(conj(s.elem(2,2)));
+
+  d.elem(0,0)= g1*(sc00*s.elem(1,1)+sc01*s.elem(1,0)+sc10*s.elem(0,1)+sc11*s.elem(0,0));
+  d.elem(0,1)=-g1*(sc00*s.elem(1,1)-sc01*s.elem(1,0)+sc10*s.elem(0,1)-sc11*s.elem(0,0));
+  d.elem(0,2)= g1*(sc00*s.elem(1,0)-sc01*s.elem(1,1)+sc10*s.elem(0,0)-sc11*s.elem(0,1));
+  d.elem(0,3)= g1*(sc00*s.elem(1,2)+sc02*s.elem(1,0)+sc10*s.elem(0,2)+sc12*s.elem(0,0));
+  d.elem(0,4)=-g1*(sc00*s.elem(1,2)-sc02*s.elem(1,0)+sc10*s.elem(0,2)-sc12*s.elem(0,0));
+  d.elem(0,5)= g1*(sc01*s.elem(1,2)+sc02*s.elem(1,1)+sc11*s.elem(0,2)+sc12*s.elem(0,1));
+  d.elem(0,6)=-g1*(sc01*s.elem(1,2)-sc02*s.elem(1,1)+sc11*s.elem(0,2)-sc12*s.elem(0,1));
+  d.elem(0,7)=-g2*(sc00*s.elem(1,0)+sc01*s.elem(1,1)-2.0*sc02*s.elem(1,2)+sc10*s.elem(0,0)
+	       +sc11*s.elem(0,1)-2.0*sc12*s.elem(0,2));
+  d.elem(1,0)=-g1*(sc00*s.elem(1,1)+sc01*s.elem(1,0)-sc10*s.elem(0,1)-sc11*s.elem(0,0));
+  d.elem(1,1)= g1*(sc00*s.elem(1,1)-sc01*s.elem(1,0)-sc10*s.elem(0,1)+sc11*s.elem(0,0));
+  d.elem(1,2)=-g1*(sc00*s.elem(1,0)-sc01*s.elem(1,1)-sc10*s.elem(0,0)+sc11*s.elem(0,1));
+  d.elem(1,3)=-g1*(sc00*s.elem(1,2)+sc02*s.elem(1,0)-sc10*s.elem(0,2)-sc12*s.elem(0,0));
+  d.elem(1,4)= g1*(sc00*s.elem(1,2)-sc02*s.elem(1,0)-sc10*s.elem(0,2)+sc12*s.elem(0,0));
+  d.elem(1,5)=-g1*(sc01*s.elem(1,2)+sc02*s.elem(1,1)-sc11*s.elem(0,2)-sc12*s.elem(0,1));
+  d.elem(1,6)= g1*(sc01*s.elem(1,2)-sc02*s.elem(1,1)-sc11*s.elem(0,2)+sc12*s.elem(0,1));
+  d.elem(1,7)= g2*(sc00*s.elem(1,0)+sc01*s.elem(1,1)-2.0*sc02*s.elem(1,2)-sc10*s.elem(0,0)
+	       -sc11*s.elem(0,1)+2.0*sc12*s.elem(0,2));
+  d.elem(2,0)= g1*(sc00*s.elem(0,1)+sc01*s.elem(0,0)-sc10*s.elem(1,1)-sc11*s.elem(1,0));
+  d.elem(2,1)=-g1*(sc00*s.elem(0,1)-sc01*s.elem(0,0)-sc10*s.elem(1,1)+sc11*s.elem(1,0));
+  d.elem(2,2)= g1*(sc00*s.elem(0,0)-sc01*s.elem(0,1)-sc10*s.elem(1,0)+sc11*s.elem(1,1));
+  d.elem(2,3)= g1*(sc00*s.elem(0,2)+sc02*s.elem(0,0)-sc10*s.elem(1,2)-sc12*s.elem(1,0));
+  d.elem(2,4)=-g1*(sc00*s.elem(0,2)-sc02*s.elem(0,0)-sc10*s.elem(1,2)+sc12*s.elem(1,0));
+  d.elem(2,5)= g1*(sc01*s.elem(0,2)+sc02*s.elem(0,1)-sc11*s.elem(1,2)-sc12*s.elem(1,1));
+  d.elem(2,6)=-g1*(sc01*s.elem(0,2)-sc02*s.elem(0,1)-sc11*s.elem(1,2)+sc12*s.elem(1,1));
+  d.elem(2,7)=-g2*(sc00*s.elem(0,0)+sc01*s.elem(0,1)-2.0*sc02*s.elem(0,2)-sc10*s.elem(1,0)
+	       -sc11*s.elem(1,1)+2.0*sc12*s.elem(1,2));
+  d.elem(3,0)= g1*(sc00*s.elem(2,1)+sc01*s.elem(2,0)+sc20*s.elem(0,1)+sc21*s.elem(0,0));
+  d.elem(3,1)=-g1*(sc00*s.elem(2,1)-sc01*s.elem(2,0)+sc20*s.elem(0,1)-sc21*s.elem(0,0));
+  d.elem(3,2)= g1*(sc00*s.elem(2,0)-sc01*s.elem(2,1)+sc20*s.elem(0,0)-sc21*s.elem(0,1));
+  d.elem(3,3)= g1*(sc00*s.elem(2,2)+sc02*s.elem(2,0)+sc20*s.elem(0,2)+sc22*s.elem(0,0));
+  d.elem(3,4)=-g1*(sc00*s.elem(2,2)-sc02*s.elem(2,0)+sc20*s.elem(0,2)-sc22*s.elem(0,0));
+  d.elem(3,5)= g1*(sc01*s.elem(2,2)+sc02*s.elem(2,1)+sc21*s.elem(0,2)+sc22*s.elem(0,1));
+  d.elem(3,6)=-g1*(sc01*s.elem(2,2)-sc02*s.elem(2,1)+sc21*s.elem(0,2)-sc22*s.elem(0,1));
+  d.elem(3,7)=-g2*(sc00*s.elem(2,0)+sc01*s.elem(2,1)-2.0*sc02*s.elem(2,2)+sc20*s.elem(0,0)
+	       +sc21*s.elem(0,1)-2.0*sc22*s.elem(0,2));
+  d.elem(4,0)=-g1*(sc00*s.elem(2,1)+sc01*s.elem(2,0)-sc20*s.elem(0,1)-sc21*s.elem(0,0));
+  d.elem(4,1)= g1*(sc00*s.elem(2,1)-sc01*s.elem(2,0)-sc20*s.elem(0,1)+sc21*s.elem(0,0));
+  d.elem(4,2)=-g1*(sc00*s.elem(2,0)-sc01*s.elem(2,1)-sc20*s.elem(0,0)+sc21*s.elem(0,1));
+  d.elem(4,3)=-g1*(sc00*s.elem(2,2)+sc02*s.elem(2,0)-sc20*s.elem(0,2)-sc22*s.elem(0,0));
+  d.elem(4,4)= g1*(sc00*s.elem(2,2)-sc02*s.elem(2,0)-sc20*s.elem(0,2)+sc22*s.elem(0,0));
+  d.elem(4,5)=-g1*(sc01*s.elem(2,2)+sc02*s.elem(2,1)-sc21*s.elem(0,2)-sc22*s.elem(0,1));
+  d.elem(4,6)= g1*(sc01*s.elem(2,2)-sc02*s.elem(2,1)-sc21*s.elem(0,2)+sc22*s.elem(0,1));
+  d.elem(4,7)= g2*(sc00*s.elem(2,0)+sc01*s.elem(2,1)-2.0*sc02*s.elem(2,2)-sc20*s.elem(0,0)
+	       -sc21*s.elem(0,1)+2.0*sc22*s.elem(0,2));
+  d.elem(5,0)= g1*(sc10*s.elem(2,1)+sc11*s.elem(2,0)+sc20*s.elem(1,1)+sc21*s.elem(1,0));
+  d.elem(5,1)=-g1*(sc10*s.elem(2,1)-sc11*s.elem(2,0)+sc20*s.elem(1,1)-sc21*s.elem(1,0));
+  d.elem(5,2)= g1*(sc10*s.elem(2,0)-sc11*s.elem(2,1)+sc20*s.elem(1,0)-sc21*s.elem(1,1));
+  d.elem(5,3)= g1*(sc10*s.elem(2,2)+sc12*s.elem(2,0)+sc20*s.elem(1,2)+sc22*s.elem(1,0));
+  d.elem(5,4)=-g1*(sc10*s.elem(2,2)-sc12*s.elem(2,0)+sc20*s.elem(1,2)-sc22*s.elem(1,0));
+  d.elem(5,5)= g1*(sc11*s.elem(2,2)+sc12*s.elem(2,1)+sc21*s.elem(1,2)+sc22*s.elem(1,1));
+  d.elem(5,6)=-g1*(sc11*s.elem(2,2)-sc12*s.elem(2,1)+sc21*s.elem(1,2)-sc22*s.elem(1,1));
+  d.elem(5,7)=-g2*(sc10*s.elem(2,0)+sc11*s.elem(2,1)-2.0*sc12*s.elem(2,2)+sc20*s.elem(1,0)
+	       +sc21*s.elem(1,1)-2.0*sc22*s.elem(1,2));
+  d.elem(6,0)=-g1*(sc10*s.elem(2,1)+sc11*s.elem(2,0)-sc20*s.elem(1,1)-sc21*s.elem(1,0));
+  d.elem(6,1)= g1*(sc10*s.elem(2,1)-sc11*s.elem(2,0)-sc20*s.elem(1,1)+sc21*s.elem(1,0));
+  d.elem(6,2)=-g1*(sc10*s.elem(2,0)-sc11*s.elem(2,1)-sc20*s.elem(1,0)+sc21*s.elem(1,1));
+  d.elem(6,3)=-g1*(sc10*s.elem(2,2)+sc12*s.elem(2,0)-sc20*s.elem(1,2)-sc22*s.elem(1,0));
+  d.elem(6,4)= g1*(sc10*s.elem(2,2)-sc12*s.elem(2,0)-sc20*s.elem(1,2)+sc22*s.elem(1,0));
+  d.elem(6,5)=-g1*(sc11*s.elem(2,2)+sc12*s.elem(2,1)-sc21*s.elem(1,2)-sc22*s.elem(1,1));
+  d.elem(6,6)= g1*(sc11*s.elem(2,2)-sc12*s.elem(2,1)-sc21*s.elem(1,2)+sc22*s.elem(1,1));
+  d.elem(6,7)= g2*(sc10*s.elem(2,0)+sc11*s.elem(2,1)-2.0*sc12*s.elem(2,2)-sc20*s.elem(1,0)
+	       -sc21*s.elem(1,1)+2.0*sc22*s.elem(1,2));
+  d.elem(7,0)=-g3*(sc00*s.elem(0,1)+sc01*s.elem(0,0)+sc10*s.elem(1,1)+sc11*s.elem(1,0));
+  d.elem(7,1)= g3*(sc00*s.elem(0,1)-sc01*s.elem(0,0)+sc10*s.elem(1,1)-sc11*s.elem(1,0));
+  d.elem(7,2)=-g3*(sc00*s.elem(0,0)-sc01*s.elem(0,1)+sc10*s.elem(1,0)-sc11*s.elem(1,1));
+  d.elem(7,3)=-g3*(sc00*s.elem(0,2)+sc02*s.elem(0,0)+sc10*s.elem(1,2)+sc12*s.elem(1,0));
+  d.elem(7,4)= g3*(sc00*s.elem(0,2)-sc02*s.elem(0,0)+sc10*s.elem(1,2)-sc12*s.elem(1,0));
+  d.elem(7,5)=-g3*(sc01*s.elem(0,2)+sc02*s.elem(0,1)+sc11*s.elem(1,2)+sc12*s.elem(1,1));
+  d.elem(7,6)= g3*(sc01*s.elem(0,2)-sc02*s.elem(0,1)+sc11*s.elem(1,2)-sc12*s.elem(1,1));
+  d.elem(7,7)= g1*(sc00*s.elem(0,0)+sc01*s.elem(0,1)-2.0*sc02*s.elem(0,2)+sc10*s.elem(1,0)
+	       +sc11*s.elem(1,1)-2.0*sc12*s.elem(1,2));
+ 
+  return d;
 }
 
 
