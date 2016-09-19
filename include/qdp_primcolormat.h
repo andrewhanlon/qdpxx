@@ -847,6 +847,7 @@ color8GaugeLink(const PColorMatrix<T,3>& s)
   T g1(.5,0.);
   T g2(1./sqrt(12.),0.);
   T g3(3./sqrt(12.),0.);
+  T g4(2.,0.);
 
   T sc00(conj(s.elem(0,0))), sc01(conj(s.elem(0,1))), sc02(conj(s.elem(0,2))),
     sc10(conj(s.elem(1,0))), sc11(conj(s.elem(1,1))), sc12(conj(s.elem(1,2))),
@@ -859,8 +860,8 @@ color8GaugeLink(const PColorMatrix<T,3>& s)
   d.elem(0,4)=-g1*(sc00*s.elem(1,2)-sc02*s.elem(1,0)+sc10*s.elem(0,2)-sc12*s.elem(0,0));
   d.elem(0,5)= g1*(sc01*s.elem(1,2)+sc02*s.elem(1,1)+sc11*s.elem(0,2)+sc12*s.elem(0,1));
   d.elem(0,6)=-g1*(sc01*s.elem(1,2)-sc02*s.elem(1,1)+sc11*s.elem(0,2)-sc12*s.elem(0,1));
-  d.elem(0,7)=-g2*(sc00*s.elem(1,0)+sc01*s.elem(1,1)-2.0*sc02*s.elem(1,2)+sc10*s.elem(0,0)
-	       +sc11*s.elem(0,1)-2.0*sc12*s.elem(0,2));
+  d.elem(0,7)=-g2*(sc00*s.elem(1,0)+sc01*s.elem(1,1)-g4*sc02*s.elem(1,2)+sc10*s.elem(0,0)
+	       +sc11*s.elem(0,1)-g4*sc12*s.elem(0,2));
   d.elem(1,0)=-g1*(sc00*s.elem(1,1)+sc01*s.elem(1,0)-sc10*s.elem(0,1)-sc11*s.elem(0,0));
   d.elem(1,1)= g1*(sc00*s.elem(1,1)-sc01*s.elem(1,0)-sc10*s.elem(0,1)+sc11*s.elem(0,0));
   d.elem(1,2)=-g1*(sc00*s.elem(1,0)-sc01*s.elem(1,1)-sc10*s.elem(0,0)+sc11*s.elem(0,1));
@@ -868,8 +869,8 @@ color8GaugeLink(const PColorMatrix<T,3>& s)
   d.elem(1,4)= g1*(sc00*s.elem(1,2)-sc02*s.elem(1,0)-sc10*s.elem(0,2)+sc12*s.elem(0,0));
   d.elem(1,5)=-g1*(sc01*s.elem(1,2)+sc02*s.elem(1,1)-sc11*s.elem(0,2)-sc12*s.elem(0,1));
   d.elem(1,6)= g1*(sc01*s.elem(1,2)-sc02*s.elem(1,1)-sc11*s.elem(0,2)+sc12*s.elem(0,1));
-  d.elem(1,7)= g2*(sc00*s.elem(1,0)+sc01*s.elem(1,1)-2.0*sc02*s.elem(1,2)-sc10*s.elem(0,0)
-	       -sc11*s.elem(0,1)+2.0*sc12*s.elem(0,2));
+  d.elem(1,7)= g2*(sc00*s.elem(1,0)+sc01*s.elem(1,1)-g4*sc02*s.elem(1,2)-sc10*s.elem(0,0)
+	       -sc11*s.elem(0,1)+g4*sc12*s.elem(0,2));
   d.elem(2,0)= g1*(sc00*s.elem(0,1)+sc01*s.elem(0,0)-sc10*s.elem(1,1)-sc11*s.elem(1,0));
   d.elem(2,1)=-g1*(sc00*s.elem(0,1)-sc01*s.elem(0,0)-sc10*s.elem(1,1)+sc11*s.elem(1,0));
   d.elem(2,2)= g1*(sc00*s.elem(0,0)-sc01*s.elem(0,1)-sc10*s.elem(1,0)+sc11*s.elem(1,1));
@@ -877,8 +878,8 @@ color8GaugeLink(const PColorMatrix<T,3>& s)
   d.elem(2,4)=-g1*(sc00*s.elem(0,2)-sc02*s.elem(0,0)-sc10*s.elem(1,2)+sc12*s.elem(1,0));
   d.elem(2,5)= g1*(sc01*s.elem(0,2)+sc02*s.elem(0,1)-sc11*s.elem(1,2)-sc12*s.elem(1,1));
   d.elem(2,6)=-g1*(sc01*s.elem(0,2)-sc02*s.elem(0,1)-sc11*s.elem(1,2)+sc12*s.elem(1,1));
-  d.elem(2,7)=-g2*(sc00*s.elem(0,0)+sc01*s.elem(0,1)-2.0*sc02*s.elem(0,2)-sc10*s.elem(1,0)
-	       -sc11*s.elem(1,1)+2.0*sc12*s.elem(1,2));
+  d.elem(2,7)=-g2*(sc00*s.elem(0,0)+sc01*s.elem(0,1)-g4*sc02*s.elem(0,2)-sc10*s.elem(1,0)
+	       -sc11*s.elem(1,1)+g4*sc12*s.elem(1,2));
   d.elem(3,0)= g1*(sc00*s.elem(2,1)+sc01*s.elem(2,0)+sc20*s.elem(0,1)+sc21*s.elem(0,0));
   d.elem(3,1)=-g1*(sc00*s.elem(2,1)-sc01*s.elem(2,0)+sc20*s.elem(0,1)-sc21*s.elem(0,0));
   d.elem(3,2)= g1*(sc00*s.elem(2,0)-sc01*s.elem(2,1)+sc20*s.elem(0,0)-sc21*s.elem(0,1));
@@ -886,8 +887,8 @@ color8GaugeLink(const PColorMatrix<T,3>& s)
   d.elem(3,4)=-g1*(sc00*s.elem(2,2)-sc02*s.elem(2,0)+sc20*s.elem(0,2)-sc22*s.elem(0,0));
   d.elem(3,5)= g1*(sc01*s.elem(2,2)+sc02*s.elem(2,1)+sc21*s.elem(0,2)+sc22*s.elem(0,1));
   d.elem(3,6)=-g1*(sc01*s.elem(2,2)-sc02*s.elem(2,1)+sc21*s.elem(0,2)-sc22*s.elem(0,1));
-  d.elem(3,7)=-g2*(sc00*s.elem(2,0)+sc01*s.elem(2,1)-2.0*sc02*s.elem(2,2)+sc20*s.elem(0,0)
-	       +sc21*s.elem(0,1)-2.0*sc22*s.elem(0,2));
+  d.elem(3,7)=-g2*(sc00*s.elem(2,0)+sc01*s.elem(2,1)-g4*sc02*s.elem(2,2)+sc20*s.elem(0,0)
+	       +sc21*s.elem(0,1)-g4*sc22*s.elem(0,2));
   d.elem(4,0)=-g1*(sc00*s.elem(2,1)+sc01*s.elem(2,0)-sc20*s.elem(0,1)-sc21*s.elem(0,0));
   d.elem(4,1)= g1*(sc00*s.elem(2,1)-sc01*s.elem(2,0)-sc20*s.elem(0,1)+sc21*s.elem(0,0));
   d.elem(4,2)=-g1*(sc00*s.elem(2,0)-sc01*s.elem(2,1)-sc20*s.elem(0,0)+sc21*s.elem(0,1));
@@ -895,8 +896,8 @@ color8GaugeLink(const PColorMatrix<T,3>& s)
   d.elem(4,4)= g1*(sc00*s.elem(2,2)-sc02*s.elem(2,0)-sc20*s.elem(0,2)+sc22*s.elem(0,0));
   d.elem(4,5)=-g1*(sc01*s.elem(2,2)+sc02*s.elem(2,1)-sc21*s.elem(0,2)-sc22*s.elem(0,1));
   d.elem(4,6)= g1*(sc01*s.elem(2,2)-sc02*s.elem(2,1)-sc21*s.elem(0,2)+sc22*s.elem(0,1));
-  d.elem(4,7)= g2*(sc00*s.elem(2,0)+sc01*s.elem(2,1)-2.0*sc02*s.elem(2,2)-sc20*s.elem(0,0)
-	       -sc21*s.elem(0,1)+2.0*sc22*s.elem(0,2));
+  d.elem(4,7)= g2*(sc00*s.elem(2,0)+sc01*s.elem(2,1)-g4*sc02*s.elem(2,2)-sc20*s.elem(0,0)
+	       -sc21*s.elem(0,1)+g4*sc22*s.elem(0,2));
   d.elem(5,0)= g1*(sc10*s.elem(2,1)+sc11*s.elem(2,0)+sc20*s.elem(1,1)+sc21*s.elem(1,0));
   d.elem(5,1)=-g1*(sc10*s.elem(2,1)-sc11*s.elem(2,0)+sc20*s.elem(1,1)-sc21*s.elem(1,0));
   d.elem(5,2)= g1*(sc10*s.elem(2,0)-sc11*s.elem(2,1)+sc20*s.elem(1,0)-sc21*s.elem(1,1));
@@ -904,8 +905,8 @@ color8GaugeLink(const PColorMatrix<T,3>& s)
   d.elem(5,4)=-g1*(sc10*s.elem(2,2)-sc12*s.elem(2,0)+sc20*s.elem(1,2)-sc22*s.elem(1,0));
   d.elem(5,5)= g1*(sc11*s.elem(2,2)+sc12*s.elem(2,1)+sc21*s.elem(1,2)+sc22*s.elem(1,1));
   d.elem(5,6)=-g1*(sc11*s.elem(2,2)-sc12*s.elem(2,1)+sc21*s.elem(1,2)-sc22*s.elem(1,1));
-  d.elem(5,7)=-g2*(sc10*s.elem(2,0)+sc11*s.elem(2,1)-2.0*sc12*s.elem(2,2)+sc20*s.elem(1,0)
-	       +sc21*s.elem(1,1)-2.0*sc22*s.elem(1,2));
+  d.elem(5,7)=-g2*(sc10*s.elem(2,0)+sc11*s.elem(2,1)-g4*sc12*s.elem(2,2)+sc20*s.elem(1,0)
+	       +sc21*s.elem(1,1)-g4*sc22*s.elem(1,2));
   d.elem(6,0)=-g1*(sc10*s.elem(2,1)+sc11*s.elem(2,0)-sc20*s.elem(1,1)-sc21*s.elem(1,0));
   d.elem(6,1)= g1*(sc10*s.elem(2,1)-sc11*s.elem(2,0)-sc20*s.elem(1,1)+sc21*s.elem(1,0));
   d.elem(6,2)=-g1*(sc10*s.elem(2,0)-sc11*s.elem(2,1)-sc20*s.elem(1,0)+sc21*s.elem(1,1));
@@ -913,8 +914,8 @@ color8GaugeLink(const PColorMatrix<T,3>& s)
   d.elem(6,4)= g1*(sc10*s.elem(2,2)-sc12*s.elem(2,0)-sc20*s.elem(1,2)+sc22*s.elem(1,0));
   d.elem(6,5)=-g1*(sc11*s.elem(2,2)+sc12*s.elem(2,1)-sc21*s.elem(1,2)-sc22*s.elem(1,1));
   d.elem(6,6)= g1*(sc11*s.elem(2,2)-sc12*s.elem(2,1)-sc21*s.elem(1,2)+sc22*s.elem(1,1));
-  d.elem(6,7)= g2*(sc10*s.elem(2,0)+sc11*s.elem(2,1)-2.0*sc12*s.elem(2,2)-sc20*s.elem(1,0)
-	       -sc21*s.elem(1,1)+2.0*sc22*s.elem(1,2));
+  d.elem(6,7)= g2*(sc10*s.elem(2,0)+sc11*s.elem(2,1)-g4*sc12*s.elem(2,2)-sc20*s.elem(1,0)
+	       -sc21*s.elem(1,1)+g4*sc22*s.elem(1,2));
   d.elem(7,0)=-g3*(sc00*s.elem(0,1)+sc01*s.elem(0,0)+sc10*s.elem(1,1)+sc11*s.elem(1,0));
   d.elem(7,1)= g3*(sc00*s.elem(0,1)-sc01*s.elem(0,0)+sc10*s.elem(1,1)-sc11*s.elem(1,0));
   d.elem(7,2)=-g3*(sc00*s.elem(0,0)-sc01*s.elem(0,1)+sc10*s.elem(1,0)-sc11*s.elem(1,1));
@@ -922,8 +923,8 @@ color8GaugeLink(const PColorMatrix<T,3>& s)
   d.elem(7,4)= g3*(sc00*s.elem(0,2)-sc02*s.elem(0,0)+sc10*s.elem(1,2)-sc12*s.elem(1,0));
   d.elem(7,5)=-g3*(sc01*s.elem(0,2)+sc02*s.elem(0,1)+sc11*s.elem(1,2)+sc12*s.elem(1,1));
   d.elem(7,6)= g3*(sc01*s.elem(0,2)-sc02*s.elem(0,1)+sc11*s.elem(1,2)-sc12*s.elem(1,1));
-  d.elem(7,7)= g1*(sc00*s.elem(0,0)+sc01*s.elem(0,1)-2.0*sc02*s.elem(0,2)+sc10*s.elem(1,0)
-	       +sc11*s.elem(1,1)-2.0*sc12*s.elem(1,2));
+  d.elem(7,7)= g1*(sc00*s.elem(0,0)+sc01*s.elem(0,1)-g4*sc02*s.elem(0,2)+sc10*s.elem(1,0)
+	       +sc11*s.elem(1,1)-g4*sc12*s.elem(1,2));
  
   return d;
 }
